@@ -41,6 +41,8 @@ public class GameRule extends JFrame {
 			}
 		});
 	}
+	
+	//이미지 크기 조정 함수
 	public Image setScale(int index) {
 		ImageIcon icon = new ImageIcon(IMAGES[index]);
 		Image img=icon.getImage();
@@ -59,10 +61,12 @@ public class GameRule extends JFrame {
 		lb.setBounds(125, 50, 750, 500);
 		contentPane.add(lb);
 		
+		//버튼 이미지
 		ImageIcon prevImg=new ImageIcon("imgs/prev.png");
 		ImageIcon nextImg=new ImageIcon("imgs/next.png");
 		ImageIcon backImg=new ImageIcon("imgs/Back.png");
 		
+		//prev버튼 
 		Image pImg=prevImg.getImage();
 		Image changePImg=pImg.getScaledInstance(40,40,Image.SCALE_SMOOTH);
 		ImageIcon changePrevImg=new ImageIcon(changePImg);
@@ -73,10 +77,10 @@ public class GameRule extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			if(index > 0) {                                    // 현재 인덱스가 0보다 크면
+			if(index > 0) {                                   
 			index--;  
-			}else {                                            // 현재 인덱스가 0이면
-			index = IMAGES.length -1;                          // 배열의 가장 큰 인덱스 번호로 변경
+			}else {                                            
+			index = IMAGES.length -1;                          
 			}
 			Image currentImg=setScale(index);
 			lb.setIcon(new ImageIcon(currentImg));
@@ -86,6 +90,7 @@ public class GameRule extends JFrame {
 		btnPrev.setBounds(390, 580, 40, 40);
 		contentPane.add(btnPrev);
 		
+		//next 버튼
 		Image nImg=nextImg.getImage();
 		Image changeNImg=nImg.getScaledInstance(40,40,Image.SCALE_SMOOTH);
 		ImageIcon changeNextImg=new ImageIcon(changeNImg);
@@ -98,7 +103,7 @@ public class GameRule extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			if(index < IMAGES.length -1) {                    // 마지막 인덱스보다 작은 경우
+			if(index < IMAGES.length -1) {                    
 			index++;  
 			}else {
 				index=0;
@@ -110,6 +115,7 @@ public class GameRule extends JFrame {
 		btnNext.setBounds(580, 580, 40, 40);
 		contentPane.add(btnNext);
 		
+		//back 버튼
 		Image bImg=backImg.getImage();
 		Image changeBImg=bImg.getScaledInstance(130,60,Image.SCALE_SMOOTH);
 		ImageIcon changeBackImg=new ImageIcon(changeBImg);
