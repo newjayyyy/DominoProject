@@ -71,6 +71,7 @@ public class DominoUI {
 		Drpane=setupDrawPanel();
 		CPpane=setupCPPanel();
 		infopane=setupInfoPanel();
+		waiting();
 		makeTile();
 		Collections.shuffle(TileList);
 		makePlayers();
