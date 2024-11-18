@@ -58,26 +58,26 @@ public class LoginForm extends JFrame {
 		addListners();
 		setTitle("Dominos");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(330, 420));
+		setPreferredSize(new Dimension(330, 430));
 		pack();
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
 	}
 
-	public ImageIcon changeImgSize(ImageIcon imgIcon) {
+	public ImageIcon changeImgSize(ImageIcon imgIcon, int w, int h) {
 		Image img = imgIcon.getImage();
-		Image changeImg = img.getScaledInstance(100, 25, Image.SCALE_SMOOTH);
+		Image changeImg = img.getScaledInstance(w, h, Image.SCALE_SMOOTH);
 		ImageIcon changeIcon = new ImageIcon(changeImg);
 		return changeIcon;
 	}
 
 	void setButtonImg(JButton button, ImageIcon img1, ImageIcon img2) {
-		loginbutton.setRolloverIcon(img1);
-		loginbutton.setPressedIcon(img2);
-		loginbutton.setBorderPainted(false);
-		loginbutton.setContentAreaFilled(false);
-		loginbutton.setFocusPainted(false);
+		button.setRolloverIcon(img1);
+		button.setPressedIcon(img2);
+		button.setBorderPainted(false);
+		button.setContentAreaFilled(false);
+		button.setFocusPainted(false);
 	}
 
 	public void setupLoginFrame() {
@@ -87,13 +87,19 @@ public class LoginForm extends JFrame {
 		idField = new JTextField(10);
 		pwField = new JPasswordField(10);
 
-		ImageIcon loginImg = changeImgSize(new ImageIcon("imgs/loginButton.png"));
-		ImageIcon loginImg2 = changeImgSize(new ImageIcon("imgs/loginButton2.png"));
-		ImageIcon loginImg3 = changeImgSize(new ImageIcon("imgs/loginButton3.png"));
+		ImageIcon loginImg = changeImgSize(new ImageIcon("imgs/loginButton.png"), 100, 25);
+		ImageIcon loginImg2 = changeImgSize(new ImageIcon("imgs/loginButton2.png"), 100, 25);
+		ImageIcon loginImg3 = changeImgSize(new ImageIcon("imgs/loginButton3.png"), 100, 25);
+		ImageIcon joinImg = changeImgSize(new ImageIcon("imgs/joinButton.png"), 80, 25);
+		ImageIcon joinImg2 = changeImgSize(new ImageIcon("imgs/joinButton2.png"), 80, 25);
+		ImageIcon joinImg3 = changeImgSize(new ImageIcon("imgs/joinButton3.png"), 80, 25);
+		ImageIcon findImg = changeImgSize(new ImageIcon("imgs/findButton.png"), 80, 25);
+		ImageIcon findImg2 = changeImgSize(new ImageIcon("imgs/findButton2.png"), 80, 25);
+		ImageIcon findImg3 = changeImgSize(new ImageIcon("imgs/findButton3.png"), 80, 25);
 
 		loginbutton = new JButton(loginImg);
-		joinButton = new JButton("회원가입");
-		findButton = new JButton("계정찾기");
+		joinButton = new JButton(joinImg);
+		findButton = new JButton(findImg);
 
 		JPanel northPanel = new JPanel();
 		JLabel titleLabel = new JLabel("로그인");
@@ -116,7 +122,9 @@ public class LoginForm extends JFrame {
 		centerPanel.add(loginPanel);
 
 		JPanel southPanel = new JPanel();
+		setButtonImg(joinButton, joinImg2, joinImg3);
 		southPanel.add(joinButton);
+		setButtonImg(findButton, findImg2, findImg3);
 		southPanel.add(findButton);
 
 		add(northPanel, BorderLayout.NORTH);
