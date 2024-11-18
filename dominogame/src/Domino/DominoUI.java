@@ -359,14 +359,14 @@ public class DominoUI {
 		Drpane = setupDrawPanel();
 		gamepane= setupGamePanel();
 		infopane= setupInfoPanel();
-		mainFrame.setPreferredSize(new Dimension(1000, 840));
+		mainFrame.setPreferredSize(new Dimension(1000, 820));
 
 	    // 레이아웃을 null로 설정하여 절대 위치 사용
 	    mainFrame.setLayout(null);  // null 레이아웃으로 설정
 
 	    // mypane의 위치와 크기 설정 (아래쪽에 배치)
-	    mypane.setPreferredSize(new Dimension(1000, 200));
-	    mypane.setBounds(0, 900, 1000, 150);  // (x, y, width, height)
+	    mypane.setPreferredSize(new Dimension(1000, 180));
+	    mypane.setBounds(0, 900, 1000, 180);  // (x, y, width, height)
 
 	    // CPpane의 위치와 크기 설정 (위쪽에 배치)
 	    CPpane.setPreferredSize(new Dimension(1000, 100));
@@ -381,7 +381,7 @@ public class DominoUI {
 	    gamepane.setBounds(0, 150, 900, 450);  // (x, y, width, height)
 	    
 	    infopane.setPreferredSize(new Dimension(1000,50));
-	    infopane.setBounds(0, 750, 1000, 50);
+	    infopane.setBounds(0, 730, 1000, 50);
 
 	    // 각 패널을 프레임에 추가
 	    mainFrame.add(mypane);
@@ -406,7 +406,7 @@ public class DominoUI {
 
 	    // 각 패널의 가로 위치만 중앙으로 정렬
 	    int mypaneX = (frameWidth - 1000) / 2;  // mypane의 가로 중앙
-	    mypane.setBounds(mypaneX, 550, 1000, 200);
+	    mypane.setBounds(mypaneX, 550, 1000, 180);
 
 	    int CPpaneX = (frameWidth - 1000) / 2;  // CPpane의 가로 중앙
 	    CPpane.setBounds(CPpaneX, 0, 1000, 100);
@@ -418,7 +418,7 @@ public class DominoUI {
 	    gamepane.setBounds(gamepaneX, 100, 900, 450);
 
 	    int infopaneX = (frameWidth-1000)/2;
-	    infopane.setBounds(infopaneX, 750, 1000, 50);
+	    infopane.setBounds(infopaneX, 730, 1000, 50);
 
 	    // 레이아웃 업데이트
 	    mainFrame.revalidate();
