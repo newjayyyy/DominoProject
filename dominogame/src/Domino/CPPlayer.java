@@ -28,6 +28,7 @@ public class CPPlayer extends Player {
 		Random rand=new Random();
 		int i;
 		System.out.printf("\t\t\t\t\t\t\t\t\t\t\t\t============CP%d 차례============\n\t\t\t\t\t\t\t\t\t\t\t\t", cpnum);	
+		updateInfo(domino,"상대 차례");
 		printCPTiles();															//상대는 항상 낼 수 있는 타일 중 합이 가장 큰 타일은 냄
 		Tile putTile=null;
 		int flag=0;
@@ -46,14 +47,19 @@ public class CPPlayer extends Player {
 		for(Tile t:ptList) {
 			if(t.tilematches(domino.mostleft, domino.mostright)) flag=1;
 		}
+		int drawtimes=0;
 		if (flag == 0) {
 			System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t낼 수 있는 타일이 없어 타일을 뽑습니다.");
 			while (true) {
 				if (domino.TileList.size() == 0) {
 					System.out.printf("\t\t\t\t\t\t\t\t\t\t\t\t더이상 뽑을 수 있는 타일이 없습니다.\n\t\t\t\t\t\t\t\t\t\t\t\t턴을 넘깁니다--남은 타일:%d\n", ptList.size());
+					updateInfo(domino,"상대 차례 : 더 이상 뽑을 타일이 없어 턴을 넘깁니다.");
+					domino.waiting();
 					break;
 				}
 				Tile newTile = domino.TileList.remove(0);
+				drawtimes++;
+				updateInfo(domino,"상대 차례 : 드로우! "+drawtimes+"장");
 				System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t(?,?) 드로우");
 				ptList.add(newTile);
 				setCPPane(domino);
@@ -67,52 +73,53 @@ public class CPPlayer extends Player {
 				domino.waiting();
 			}
 		}
-		if (flag == 1) {																	//낼 타일 고르기(여러개면 합이 가장 큰 타일을 냄)
-				ArrayList<Tile> canPut = new ArrayList<Tile>();
-				for (Tile t : ptList) {
-					if (t.tilematches(domino.mostleft, domino.mostright))
-						canPut.add(t);
+		if (flag == 1) { // 낼 타일 고르기(여러개면 합이 가장 큰 타일을 냄)
+			updateInfo(domino, "상대 차례");
+			ArrayList<Tile> canPut = new ArrayList<Tile>();
+			for (Tile t : ptList) {
+				if (t.tilematches(domino.mostleft, domino.mostright))
+					canPut.add(t);
+			}
+			Tile highest = canPut.get(0);
+			for (Tile t : canPut) {
+				if (highest.tilesum() < t.tilesum())
+					highest = t;
+			}
+			putTile = ptList.remove(ptList.indexOf(highest)); // 합이 제일 큰 타일의 인덱스를 찾고 그 인데스의 타일을 제거하고 꺼내옴
+			System.out.printf("\t\t\t\t\t\t\t\t\t\t\t\t");
+			putTile.print();
+			System.out.printf("를 냅니다.\n\t\t\t\t\t\t\t\t\t\t\t\t");
+
+			domino.waiting();
+			int putpossible = domino.putnum(putTile);
+			if (putpossible == 2) {
+				int putside = 0;
+				if (putside <= 0) {
+					putTile.print();
+					System.out.printf("를 왼쪽에 둡니다.\n");
+					domino.putnewTile(putTile, 0);
+				} else {
+					putTile.print();
+					System.out.printf("를 오른쪽에 둡니다.\n");
+					domino.putnewTile(putTile, 1);
 				}
-				Tile highest = canPut.get(0);
-				for (Tile t : canPut) {
-					if (highest.tilesum() < t.tilesum())
-						highest = t;
+			} else if (putpossible == 1) {
+				if (domino.mostleft == putTile.leftnum || domino.mostleft == putTile.rightnum) {
+					putTile.print();
+					System.out.printf("를 왼쪽에 둡니다.\n");
+					domino.putnewTile(putTile, 0);
+				} else if (domino.mostright == putTile.leftnum || domino.mostright == putTile.rightnum) {
+					putTile.print();
+					System.out.printf("를 오른쪽에 둡니다.\n");
+					domino.putnewTile(putTile, 1);
 				}
-				putTile=ptList.remove(ptList.indexOf(highest));		//합이 제일 큰 타일의 인덱스를 찾고 그 인데스의 타일을 제거하고 꺼내옴
-				System.out.printf("\t\t\t\t\t\t\t\t\t\t\t\t");
-				putTile.print();
-				System.out.printf("를 냅니다.\n\t\t\t\t\t\t\t\t\t\t\t\t");
-				
-				domino.waiting();
-				int putpossible = domino.putnum(putTile);
-				if (putpossible == 2) {
-					int putside = 0;
-					if (putside <= 0) {
-						putTile.print();
-						System.out.printf("를 왼쪽에 둡니다.\n");
-						domino.putnewTile(putTile, 0);
-					} else {
-						putTile.print();
-						System.out.printf("를 오른쪽에 둡니다.\n");
-						domino.putnewTile(putTile, 1);
-					}
-				} else if (putpossible == 1) {
-					if (domino.mostleft == putTile.leftnum || domino.mostleft == putTile.rightnum) {
-						putTile.print();
-						System.out.printf("를 왼쪽에 둡니다.\n");
-						domino.putnewTile(putTile, 0);
-					} else if (domino.mostright == putTile.leftnum || domino.mostright == putTile.rightnum) {
-						putTile.print();
-						System.out.printf("를 오른쪽에 둡니다.\n");
-						domino.putnewTile(putTile, 1);
-					}
-				}
-				setCPPane(domino);
-				putTileimg(domino, highest);
-				domino.setleftright();
-				domino.waiting();
-				domino.endcount[cpnum]=0;
-				return;
+			}
+			setCPPane(domino);
+			putTileimg(domino, highest);
+			domino.setleftright();
+			domino.waiting();
+			domino.endcount[cpnum] = 0;
+			return;
 		}
 		domino.endcount[cpnum]=1;
 	}
@@ -229,7 +236,7 @@ public class CPPlayer extends Player {
 
 	void setCPPane(DominoUI domino) {
 		Component[] components = domino.CPpane.getComponents();
-		domino.CPpane.remove(components[components.length-1]);
+		if(components.length!=0)domino.CPpane.remove(components[components.length-1]);
 		JLabel cpTiles=new JLabel("X"+ptList.size());
 		cpTiles.setBounds(560,40,domino.mtsizeh,domino.mtsizeh);
         cpTiles.setFont(domino.font);

@@ -11,8 +11,6 @@ import java.awt.Image;
 
 public class ImageMouseListener extends MouseAdapter {
     private final JLabel imageLabel;  // 이벤트가 발생한 이미지 레이블
-    private final int[] fxpos;        // 이미지의 x 좌표 배열
-    private final int[] fypos;        // 이미지의 y 좌표 배열
     private final int index;          // 이미지의 인덱스
     private final JLabel[] selectedImage;  // 선택된 이미지 레이블을 추적
     
@@ -24,10 +22,8 @@ public class ImageMouseListener extends MouseAdapter {
     private static int CLICK_HEIGHT;
 
     // 생성자: imageLabel, fxpos, fypos, index, selectedImage를 받아서 초기화
-    public ImageMouseListener(JLabel imageLabel, int[] fxpos, int[] fypos, int index, JLabel[] selectedImage, DominoUI du) {
+    public ImageMouseListener(JLabel imageLabel,  int index, JLabel[] selectedImage, DominoUI du) {
         this.imageLabel = imageLabel;
-        this.fxpos = fxpos;
-        this.fypos = fypos;
         this.index = index;
         this.selectedImage = selectedImage;
         this.DEFAULT_WIDTH=du.mtsizew;
@@ -41,7 +37,7 @@ public class ImageMouseListener extends MouseAdapter {
     @Override
     public void mouseEntered(MouseEvent e) {
         // 마우스가 레이블 위에 올라갔을 때 크기를 증가
-        imageLabel.setBounds(fxpos[index], fypos[index], HOVER_WIDTH, HOVER_HEIGHT);
+        imageLabel.setSize(HOVER_WIDTH, HOVER_HEIGHT);
         imageLabel.setIcon(new ImageIcon(((ImageIcon) imageLabel.getIcon()).getImage().getScaledInstance(HOVER_WIDTH, HOVER_HEIGHT, Image.SCALE_SMOOTH)));
         imageLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
@@ -50,7 +46,7 @@ public class ImageMouseListener extends MouseAdapter {
     public void mouseExited(MouseEvent e) {
         // 마우스를 떼었을 때 원래 크기로 돌아가는데, 클릭된 이미지만 크기를 유지
         if (imageLabel != selectedImage[0]) {
-            imageLabel.setBounds(fxpos[index], fypos[index], DEFAULT_WIDTH, DEFAULT_HEIGHT);
+            imageLabel.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
             imageLabel.setIcon(new ImageIcon(((ImageIcon) imageLabel.getIcon()).getImage().getScaledInstance(DEFAULT_WIDTH, DEFAULT_HEIGHT, Image.SCALE_SMOOTH)));
         }
         imageLabel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -61,13 +57,13 @@ public class ImageMouseListener extends MouseAdapter {
         // 클릭된 이미지를 크기를 증가시킴
         if (selectedImage[0] != null && selectedImage[0] != imageLabel) {
             // 이전에 클릭된 이미지를 원래 크기로 복원
-            selectedImage[0].setBounds(fxpos[index], fypos[index], DEFAULT_WIDTH, DEFAULT_HEIGHT);
+            selectedImage[0].setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
             selectedImage[0].setIcon(new ImageIcon(((ImageIcon) selectedImage[0].getIcon()).getImage().getScaledInstance(DEFAULT_WIDTH, DEFAULT_HEIGHT, Image.SCALE_SMOOTH)));
         }
 
         // 선택된 이미지를 업데이트하고 크기를 키움
         selectedImage[0] = imageLabel;
-        imageLabel.setBounds(375, 160, CLICK_WIDTH, CLICK_HEIGHT);
+        imageLabel.setSize(CLICK_WIDTH, CLICK_HEIGHT);
         imageLabel.setIcon(new ImageIcon(((ImageIcon) imageLabel.getIcon()).getImage().getScaledInstance(CLICK_WIDTH, CLICK_HEIGHT, Image.SCALE_SMOOTH)));
       
         

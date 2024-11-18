@@ -48,7 +48,6 @@ public class Player {
 	}
 	
 	private int p;
-	JPanel newmypane;
 	int putpossible;
 	int putwhere;
 	void Plyerturn (DominoUI domino, Scanner scan) {
@@ -59,15 +58,15 @@ public class Player {
 		Tile putTile=null;
 		int flag=0;
 		if(domino.gameTile.size()==0) {
-			domino.mypane=domino.setupMyPanel();
 			showtiles();
 			System.out.printf("\n몇 번째 타일을 내겠습니까?(처음에는 아무거나 내기)");
+			updateInfo(domino,"내 차례 : 낼 타일 고르기 (처음에는 아무거나)");
 			
 			setMyPane(domino);
 			
 			synchronized (lock) {
 				try {
-					System.out.println("프로그램이 잠깐 멈췄습니다...1");
+					System.out.println("프로그램이 잠깐 멈췄습니다...낼 타일 고르기");
 					lock.wait(); // 이 시점에서 대기
 					System.out.println("라벨 클릭 후 p의 값: " + p); // 대기 후 p 값 출력
 				} catch (InterruptedException e) {
@@ -87,18 +86,23 @@ public class Player {
 		for(Tile t:ptList) {
 			if(t.tilematches(domino.mostleft, domino.mostright)) flag=1;
 		}	
-		
+		int drawtimes=0;
 		if (flag == 0) {
 			System.out.println("낼 수 있는 타일이 없어 타일을 뽑습니다.");
 			while (true) {
 				if (domino.TileList.size() == 0) {
 					System.out.printf("더이상 뽑을 수 있는 타일이 없습니다.\n턴을 넘깁니다--내 타일:%d개\n", ptList.size());
+					updateInfo(domino,"내 차례 : 더 이상 뽑을 타일이 없어 턴을 넘깁니다.");
+					domino.waiting();
 					break;
 				}
 				Tile newTile = domino.TileList.remove(0);
 				newTile.print();
+				drawtimes++;
 				System.out.println(" 드로우");
+				updateInfo(domino,"내 차례 : 드로우! "+drawtimes+"장");
 				ptList.add(newTile);
+				setMyPane(domino);
 				drawCount(domino);
 				if (newTile.tilematches(domino.mostleft, domino.mostright)) {
 					System.out.println("드로우 끝");
@@ -113,6 +117,10 @@ public class Player {
 			setMyPane(domino);
 			printpossibletile(domino.mostleft, domino.mostright);
 			System.out.printf("\n\n몇 번째 타일을 내겠습니까?(낼 수 있는 타일은 'ㅇ'으로 표시)\n");
+			if(drawtimes>0) {
+				updateInfo(domino,"내 차례 : 낼 타일 선택("+drawtimes+"장 드로우 됨)");
+			}
+			else updateInfo(domino,"내 차례 : 낼 타일 선택");
 			
 			
 			putpossible=-1;
@@ -121,7 +129,7 @@ public class Player {
 				System.out.printf("1~%d선택 : ", ptList.size());
 				synchronized (lock) {
 					try {
-						System.out.println("프로그램이 잠깐 멈췄습니다...1");
+						System.out.println("프로그램이 잠깐 멈췄습니다...낼 타일 고르기");
 						lock.wait(); // 이 시점에서 대기
 						System.out.println("라벨 클릭 후 p의 값: " + p); // 대기 후 p 값 출력
 					} catch (InterruptedException e) {
@@ -146,9 +154,10 @@ public class Player {
 				putTile=ptList.get(p);
 				putpossible=domino.putnum(putTile);
 				selectPutWhere(putpossible, putTile, domino);
+				updateInfo(domino,"내 차례 : 낼 곳 또는 다른 타일 선택");
 				synchronized (lock) {
 					try {
-						System.out.println("프로그램이 잠깐 멈췄습니다...1");
+						System.out.println("프로그램이 잠깐 멈췄습니다...낼 곳 고르기");
 						lock.wait(); // 이 시점에서 대기
 						System.out.println("선택완료"); // 대기 후 p 값 출력
 					} catch (InterruptedException e) {
@@ -184,12 +193,7 @@ public class Player {
             }
         }
         
-        int xpos = 0;
-	    int ypos = 5;
-	    int gap = 10;
-	    final int[] fxpos = new int[21]; // 이미지의 x 좌표 배열
-	    final int[] fypos = new int[21]; // 이미지의 y 좌표 배열
-	    // ImagePanel 객체 생성 (순서를 관리하는 클래스)
+     
 	    final JLabel[] selectedImage = new JLabel[1]; // 선택된 이미지를 추적할 배열 (크기를 증가시킬 이미지)
 	    
 	    for(int i=0;i<ptList.size();i++) {
@@ -198,9 +202,9 @@ public class Player {
 	    	BufferedImage resizedimg=Imgmgr.resizeImage(newimg, domino.mtsizew, domino.mtsizeh);
 	    	ImageIcon imgIcon=new ImageIcon(resizedimg);
 	    	JLabel imgLabel=new JLabel(imgIcon);
-	    	imgLabel.setBounds(xpos,ypos,domino.mtsizew, domino.mtsizeh);
+
 	    	if(ptList.get(i).tilematches(domino.mostleft, domino.mostright)||domino.gameTile.size()==0) {
-	    		imgLabel.addMouseListener(new ImageMouseListener(imgLabel, fxpos, fypos, i, selectedImage, domino));
+	    		imgLabel.addMouseListener(new ImageMouseListener(imgLabel, i, selectedImage, domino));
 	    		imgLabel.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
@@ -224,16 +228,7 @@ public class Player {
 					}
 				});
 	    	}
-	    	 // 이미지 좌표 저장
-	    	fxpos[i]=xpos;
-	    	fypos[i]=ypos;
 	    	
-	    	 // 위치 업데이트
-	        xpos += domino.mtsizew + gap; // 기본 너비 150으로 설정
-	        if ((i + 1) % 7 == 0) {
-	            xpos = 0;
-	            ypos += domino.mtsizeh + gap; // 기본 높이 75로 설정
-	        }
 	    	domino.imageList.add(imgLabel);
 	        
 	    }
@@ -441,7 +436,6 @@ public class Player {
 		ImageIcon imageIconInLabel = (ImageIcon) icon;
 		Image image = imageIconInLabel.getImage();
 		
-		System.out.println("=================!!!#35");
 		
 		if(domino.gameTile.size()==0) {
 			Image scaledImage = image.getScaledInstance(gtsizew, gtsizeh, Image.SCALE_SMOOTH);
@@ -573,12 +567,7 @@ public class Player {
 			JLabel imgLabel = new JLabel(imgIcon);
 			imgLabel.setBounds(xpos, ypos, domino.mtsizew, domino.mtsizeh);
 
-			// 위치 업데이트
-			xpos += domino.mtsizew + gap; // 기본 너비 150으로 설정
-			if ((i + 1) % 7 == 0) {
-				xpos = 0;
-				ypos += domino.mtsizeh + gap; // 기본 높이 75로 설정
-			}
+			
 			domino.imageList.add(imgLabel);
 
 		}
@@ -594,14 +583,25 @@ public class Player {
 	void drawCount(DominoUI domino) {
 		Component[] components = domino.Drpane.getComponents();
 		int totalComponents = components.length;
-		domino.Drpane.remove(components[components.length-1]);
+		if(components.length!=0)domino.Drpane.remove(components[components.length-1]);
 		JLabel countdraw=new JLabel("X"+domino.TileList.size());
-		countdraw.setBounds(56,275,domino.mtsizeh,domino.mtsizeh);
+		countdraw.setBounds(56,175,domino.mtsizeh,domino.mtsizeh);
         countdraw.setFont(domino.font);
         domino.Drpane.add(countdraw);
         domino.Drpane.revalidate();
         domino.Drpane.repaint();
 	}
-
+	
+	void updateInfo(DominoUI domino,String message) {
+		Component[] components = domino.infopane.getComponents();
+		int totalComponents = components.length;
+		if(components.length>=3)domino.infopane.remove(components[components.length-1]);
+		JLabel msglb=new JLabel(message);
+		msglb.setFont(domino.infofont);
+		msglb.setBounds(500-message.length()*10, 0, message.length()*20, 50);
+		domino.infopane.add(msglb);
+		domino.infopane.revalidate();
+		domino.infopane.repaint();
+	}
 
 }
