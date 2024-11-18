@@ -3,6 +3,7 @@ package domino;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -11,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -41,10 +43,10 @@ public class JoinForm extends JDialog {
 		this.loginForm = loginForm;
 	}
 	
-	void addUser(String id, String pw)throws IOException {
+	void addUser(User u)throws IOException {
 		PrintWriter fw = new PrintWriter(new FileWriter("login.txt", true));
 		System.out.println();
-		fw.println(id+" "+pw);
+		fw.println(u.id+" "+u.pw+" "+u.win+" "+u.loss+" "+u.score+" "+u.winNum+" "+u.tryNum);
 		fw.close();
 	}
 	
@@ -53,14 +55,36 @@ public class JoinForm extends JDialog {
 		setTitle("Dominos");
 		addListeners();
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setPreferredSize(new Dimension(330, 270));
+		setPreferredSize(new Dimension(330, 290));
 		pack();
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
+	
+	public ImageIcon changeImgSize(ImageIcon imgIcon, int w, int h) {
+		Image img = imgIcon.getImage();
+		Image changeImg = img.getScaledInstance(w, h, Image.SCALE_SMOOTH);
+		ImageIcon changeIcon = new ImageIcon(changeImg);
+		return changeIcon;
+	}
+
+	void setButtonImg(JButton button, ImageIcon img1, ImageIcon img2) {
+		button.setRolloverIcon(img1);
+		button.setPressedIcon(img2);
+		button.setBorderPainted(false);
+		button.setContentAreaFilled(false);
+		button.setFocusPainted(false);
+	}
 
 	private void setupLoginFrame() {
+		ImageIcon joinBtn = changeImgSize(new ImageIcon("imgs/joinBtn.png"), 90, 30);
+		ImageIcon joinBtn2 = changeImgSize(new ImageIcon("imgs/joinBtn2.png"), 90, 30);
+		ImageIcon joinBtn3 = changeImgSize(new ImageIcon("imgs/joinBtn3.png"), 90, 30);
+		ImageIcon cancelBtn = changeImgSize(new ImageIcon("imgs/cancelBtn.png"), 70, 25);
+		ImageIcon cancelBtn2 = changeImgSize(new ImageIcon("imgs/cancelBtn2.png"), 70, 25);
+		ImageIcon cancelBtn3 = changeImgSize(new ImageIcon("imgs/cancelBtn3.png"), 70, 25);
+		
 		titleLabel = new JLabel("회원가입", JLabel.CENTER);
 		idLabel = new JLabel("아이디", JLabel.CENTER);
 		pwLabel = new JLabel("비밀번호", JLabel.CENTER);
@@ -70,8 +94,8 @@ public class JoinForm extends JDialog {
 		pwTxt = new JPasswordField(10);
 		reTxt = new JPasswordField(10);
 
-		joinButton = new JButton("   가입   ");
-		cancelButton = new JButton("취소");
+		joinButton = new JButton(joinBtn);
+		cancelButton = new JButton(cancelBtn);
 
 		JPanel northPanel = new JPanel();
 		northPanel.add(titleLabel);
@@ -85,11 +109,13 @@ public class JoinForm extends JDialog {
 		dataPanel.add(reLabel);
 		dataPanel.add(reTxt);
 		JPanel joinPanel = new JPanel();
+		setButtonImg(joinButton, joinBtn2, joinBtn3);
 		joinPanel.add(joinButton);
 		centerPanel.add(dataPanel);
 		centerPanel.add(joinPanel);
 
 		JPanel southPanel = new JPanel();
+		setButtonImg(cancelButton, cancelBtn2, cancelBtn3);
 		southPanel.add(cancelButton);
 
 		add(northPanel, BorderLayout.NORTH);
@@ -152,9 +178,14 @@ public class JoinForm extends JDialog {
 						User u = new User();
 						u.id = idTxt.getText();
 						u.pw = pwTxt.getText();
+						u.win = 0;
+						u.loss = 0;
+						u.score = 500;
+						u.winNum = 0;
+						u.tryNum = 0;
 						LoginForm.userData.add(u);
 						try {
-							addUser(idTxt.getText(), pwTxt.getText());
+							addUser(u);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
