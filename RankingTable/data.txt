@@ -1,9 +1,0 @@
-User1, 10, 10
-User2, 20, 19
-User3, 15, 13
-User4, 12, 10
-User5, 8, 6
-User6, 10, 7
-User7, 20, 12
-User8, 5, 2
-User9, 10, 3
