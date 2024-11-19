@@ -26,21 +26,6 @@ public class GameRule extends JFrame {
 		"imgs/rule_5.jpg",
 		"imgs/rule_6.jpg"
 	};
-
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GameRule frame = new GameRule();
-					frame.setVisible(true);
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 	
 	//이미지 크기 조정 함수
 	public Image setScale(int index) {
@@ -51,7 +36,7 @@ public class GameRule extends JFrame {
 	}
 	
 	
-	public GameRule() {
+	public GameRule(JFrame mainFrame) {
 		
 		contentPane=new JPanel();
 		contentPane.setLayout(null);
@@ -125,6 +110,9 @@ public class GameRule extends JFrame {
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
+				
+				//mainPage 다시 보이기
+				mainFrame.setVisible(true);
 			}
 		});
 		btnBack.setBounds(440, 570, 130, 60);
@@ -136,6 +124,5 @@ public class GameRule extends JFrame {
 		
 		setSize(1000,800);
 		add(contentPane);
-		
 	}
 }

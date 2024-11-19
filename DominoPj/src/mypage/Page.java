@@ -22,7 +22,7 @@ public class Page extends JFrame {
 	private JPanel Panel;
 	
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -33,10 +33,10 @@ public class Page extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 
-	public Page() {
+	public Page(JFrame mainFrame) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("MyPage");
 		Panel=new JPanel();
@@ -95,6 +95,7 @@ public class Page extends JFrame {
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
+				mainFrame.setVisible(true);
 			}
 		});
 		Panel.add(btnBack);

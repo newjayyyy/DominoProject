@@ -1,4 +1,4 @@
-package domino;
+package main;
 
 public class User {
     private String username;
