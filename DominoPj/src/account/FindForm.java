@@ -1,8 +1,9 @@
-package dominoLogin;
+package account;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -11,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -35,13 +37,28 @@ public class FindForm extends JDialog {
 	public FindForm(LoginForm loginForm) {
 		this.loginForm = loginForm;
 	}
+	
+	public ImageIcon changeImgSize(ImageIcon imgIcon, int w, int h) {
+		Image img = imgIcon.getImage();
+		Image changeImg = img.getScaledInstance(w, h, Image.SCALE_SMOOTH);
+		ImageIcon changeIcon = new ImageIcon(changeImg);
+		return changeIcon;
+	}
+
+	void setButtonImg(JButton button, ImageIcon img1, ImageIcon img2) {
+		button.setRolloverIcon(img1);
+		button.setPressedIcon(img2);
+		button.setBorderPainted(false);
+		button.setContentAreaFilled(false);
+		button.setFocusPainted(false);
+	}
 
 	public void showJoinForm() {
 		setupLoginFrame();
 		setTitle("Dominos");
 		addListeners();
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setPreferredSize(new Dimension(330, 170));
+		setPreferredSize(new Dimension(330, 190));
 		pack();
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -49,13 +66,21 @@ public class FindForm extends JDialog {
 	}
 
 	private void setupLoginFrame() {
+		
+		ImageIcon findBtn = changeImgSize(new ImageIcon("imgsLogin/findBtn.png"), 90, 30);
+		ImageIcon findBtn2 = changeImgSize(new ImageIcon("imgsLogin/findBtn2.png"), 90, 30);
+		ImageIcon findBtn3 = changeImgSize(new ImageIcon("imgsLogin/findBtn3.png"), 90, 30);
+		ImageIcon cancelBtn = changeImgSize(new ImageIcon("imgsLogin/cancelBtn.png"), 70, 25);
+		ImageIcon cancelBtn2 = changeImgSize(new ImageIcon("imgsLogin/cancelBtn2.png"), 70, 25);
+		ImageIcon cancelBtn3 = changeImgSize(new ImageIcon("imgsLogin/cancelBtn3.png"), 70, 25);
+		
 		titleLabel = new JLabel("계정찾기", JLabel.CENTER);
 		idLabel = new JLabel("아이디", JLabel.CENTER);
 
 		idTxt = new JTextField(10);
 
-		findButton = new JButton("   찾기   ");
-		cancelButton = new JButton("취소");
+		findButton = new JButton(findBtn);
+		cancelButton = new JButton(cancelBtn);
 
 		JPanel northPanel = new JPanel();
 		northPanel.add(titleLabel);
@@ -66,11 +91,13 @@ public class FindForm extends JDialog {
 		dataPanel.add(idTxt);
 
 		JPanel findPanel = new JPanel();
+		setButtonImg(findButton, findBtn2, findBtn3);
 		findPanel.add(findButton);
 		centerPanel.add(dataPanel);
 		centerPanel.add(findPanel);
 
 		JPanel southPanel = new JPanel();
+		setButtonImg(cancelButton, cancelBtn2, cancelBtn3);
 		southPanel.add(cancelButton);
 
 		add(northPanel, BorderLayout.NORTH);
