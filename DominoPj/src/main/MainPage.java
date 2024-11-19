@@ -143,13 +143,25 @@ public class MainPage extends JFrame {
 		btnNormalMode.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // 메인 창 숨기기
-                setVisible(false);
+            	new SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                       // 메인 창 숨기기
+                       setVisible(false);
 
-                // 일반모드 창 생성 및 표시
-               DominoUI gameFrame=new DominoUI();
-               gameFrame.gameMain();//여기서 스윙이 안되고 console에서 실행됨. 왜????
-               gameFrame.setVisible(true);
-               }
+                       // 일반모드 창 생성 및 표시
+                       DominoUI gameFrame = new DominoUI();
+                       gameFrame.gameMain(MainPage.this);
+                       return null;
+                    }
+
+                    @Override
+                    protected void done()    {
+                    	}
+                    }.execute();
+
+               
+            }
 		});
 
 		//도전모드 버튼

@@ -66,11 +66,11 @@ public class DominoUI extends JFrame{
 		}
 	}
 	
-	void gameset() {
+	void gameset(JFrame mainPageFrame) {
 		mypane=setupMyPanel();
 		Drpane=setupDrawPanel();
 		CPpane=setupCPPanel();
-		infopane=setupInfoPanel();
+		infopane=setupInfoPanel(mainPageFrame);
 		waiting();
 		makeTile();
 		Collections.shuffle(TileList);
@@ -341,10 +341,10 @@ public class DominoUI extends JFrame{
 	JPanel infopane;
     ArrayList<JLabel> imageList = new ArrayList<>(); // 이미지 레이블 리스트
     
-	public void startGUI() {
+	public void startGUI(JFrame mainPageFrame) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				createAndShowGUI();
+				createAndShowGUI(mainPageFrame);
 			}
 		});
 	}
@@ -352,13 +352,13 @@ public class DominoUI extends JFrame{
 	static JFrame mainFrame=new JFrame("Domino");
 	static DominoUI main=null;
 	
-	private void createAndShowGUI() {
+	private void createAndShowGUI(JFrame mainPageFrame) {
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mypane = setupMyPanel();
 		CPpane = setupCPPanel();
 		Drpane = setupDrawPanel();
 		gamepane= setupGamePanel();
-		infopane= setupInfoPanel();
+		infopane= setupInfoPanel(mainPageFrame);
 		mainFrame.setPreferredSize(new Dimension(1000, 820));
 
 	    // 레이아웃을 null로 설정하여 절대 위치 사용
@@ -494,7 +494,7 @@ public class DominoUI extends JFrame{
 	    gamepane.setLayout(null);
 		return gamepane;
 	}
-	JPanel setupInfoPanel() {
+	JPanel setupInfoPanel(JFrame mainPageFrame) {
 		JPanel infopane=new JPanel() {
 			protected void paintComponent(Graphics g) {
 		        super.paintComponent(g); // JPanel의 기본 페인팅을 호출하여 배경을 그리도록 함
@@ -524,6 +524,8 @@ public class DominoUI extends JFrame{
                 // '예'를 클릭한 경우 프로그램 종료
                 if (response == JOptionPane.YES_OPTION) {
                 	mainFrame.dispose();
+                	mainPageFrame.setVisible(true);
+                	//System.exit(0)을 사용하면 프로그램이 아예 종료가 되는 버그 생김. 초기화 메서드 사용?
                     System.exit(0); // 프로그램 종료===================================종료
                 }
                 // '아니오'를 클릭한 경우 아무 일도 하지 않음
@@ -542,11 +544,11 @@ public class DominoUI extends JFrame{
 	}
 	
 	//public static을 없애고 다른 함수 해야함.
-	public void gameMain() {
+	public void gameMain(JFrame mainPageFrame) {
 		while(true) {
 			main = new DominoUI();
-			main.startGUI();
-			main.gameset();
+			main.startGUI(mainPageFrame);
+			main.gameset(mainPageFrame);
 			main.gamestart();
 			main.gameend();
 			if (stopgame)
