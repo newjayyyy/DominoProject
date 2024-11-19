@@ -46,7 +46,7 @@ public class JoinForm extends JDialog {
 	void addUser(User u)throws IOException {
 		PrintWriter fw = new PrintWriter(new FileWriter("login.txt", true));
 		System.out.println();
-		fw.println(u.id+" "+u.pw+" "+u.win+" "+u.loss+" "+u.score+" "+u.winNum+" "+u.tryNum);
+		fw.println(u.id+" "+u.pw+" "+u.win+" "+u.loss+" "+u.score+" "+u.winNum+" "+u.tryNum+"\n");
 		fw.close();
 	}
 	
