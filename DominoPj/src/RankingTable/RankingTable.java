@@ -88,7 +88,7 @@ public class RankingTable extends JFrame {
 
         // 이미지 로드
         try {
-            ImageIcon rankingImage = new ImageIcon(RankingTable.class.getResource("image/RankingTable_image.png"));
+            ImageIcon rankingImage = new ImageIcon("image/RankingTable_image.png");
             imageLabel.setIcon(rankingImage);
         } catch (Exception e) {
             System.err.println("이미지를 로드할 수 없습니다: " + e.getMessage());
