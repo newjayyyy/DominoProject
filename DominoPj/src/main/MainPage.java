@@ -16,6 +16,7 @@ public class MainPage extends JFrame {
 
 	private CardLayout cardLayout;
 	private JPanel mainPanel;
+	
 
 	public MainPage() {
 		// JFrame 설정
@@ -33,7 +34,7 @@ public class MainPage extends JFrame {
 		// 메인 페이지 패널
 		JPanel mainPagePanel = createMainPagePanel();
 		mainPanel.add(mainPagePanel, "MainPage");
-
+		
 	}
 
 	private JPanel createMainPagePanel() {
@@ -123,9 +124,10 @@ public class MainPage extends JFrame {
                 if(answer==1) {
                 	// 메인 창 숨기기
                     setVisible(false);
-        			LoginForm LoginFormFrame = new LoginForm();
-        			LoginFormFrame.showLoginForm();
+        			
+                    LoginForm LoginFormFrame = new LoginForm();
         			LoginFormFrame.setVisible(true);
+        			LoginFormFrame.showLoginForm();
                 }
             }
 		});
@@ -204,7 +206,11 @@ public class MainPage extends JFrame {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {
 			MainPage mainPage = new MainPage();
-			mainPage.setVisible(true);
+			mainPage.setVisible(false);
+			LoginForm LoginFormFrame = new LoginForm();
+			LoginFormFrame.setVisible(true);
+			LoginFormFrame.showLoginForm();
+			
 		});
 	}
 }
