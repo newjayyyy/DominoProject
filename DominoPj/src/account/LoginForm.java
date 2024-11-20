@@ -6,7 +6,11 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -22,7 +26,8 @@ import javax.swing.JTextField;
 import main.MainPage;
 
 public class LoginForm extends JFrame {
-	static ArrayList<User> userData = new ArrayList<>();
+	public static ArrayList<User> userData = new ArrayList<>();
+	public static User myData = new User();
 
 	public void readAll(String filename) {
 		Scanner filein = openFile(filename);
@@ -53,10 +58,12 @@ public class LoginForm extends JFrame {
 	private JButton loginbutton;
 	private JButton joinButton;
 	private JButton findButton;
+
 	public void showLoginForm() {
-		
+
 		MainPage mainPageFrame = new MainPage();
-		readAll("login.txt");
+		if (userData.isEmpty())
+			readAll("login.txt");
 		setupLoginFrame();
 		addListners(mainPageFrame);
 		setTitle("Dominos");
@@ -136,7 +143,7 @@ public class LoginForm extends JFrame {
 	}
 
 	public void addListners(JFrame mainFrame) {
-		
+
 		joinButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
@@ -154,9 +161,12 @@ public class LoginForm extends JFrame {
 					if (list.id.equals(idField.getText()) && list.pw.equals(pwField.getText())) {
 						JOptionPane.showMessageDialog(null, "로그인 성공");
 						loggedIn = true;
+						// id와 pw가 일치하면 현재 객체를 myData에 저장
+						myData = list;
+						myData.index = userData.indexOf(list);
 						dispose();
-						
-						//mainPage 다시 보이기
+
+						// mainPage 다시 보이기
 						mainFrame.setVisible(true);
 						break;
 					}
@@ -166,7 +176,7 @@ public class LoginForm extends JFrame {
 				}
 			}
 		});
-		
+
 		findButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
@@ -176,11 +186,37 @@ public class LoginForm extends JFrame {
 				pwField.setText("");
 			}
 		});
+
+		// 화면 종료시 login.txt에 저장하는 함수 호출 후 종료
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent we) {
+				saveUserData();
+				dispose();
+			}
+		});
+
+	}
+	
+	//userData에 myData저장 후 userData를 login.txt에 출력
+	public void saveUserData() {
+		userData.set(myData.index, myData);
+		try {
+			new FileWriter("login.txt", false).close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for (User list : userData) {
+			try {
+				list.printToTxt();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
-	/*public static void main(String[] args) {
-		
-		LoginForm loginMain = new LoginForm();
-		loginMain.showLoginForm();
-	}*/
+	/*
+	 * public static void main(String[] args) {
+	 * 
+	 * LoginForm loginMain = new LoginForm(); loginMain.showLoginForm(); }
+	 */
 }

@@ -43,12 +43,12 @@ public class JoinForm extends JDialog {
 		this.loginForm = loginForm;
 	}
 	
-	void addUser(User u)throws IOException {
+	/*void addUser(User u)throws IOException {
 		PrintWriter fw = new PrintWriter(new FileWriter("login.txt", true));
 		System.out.println();
 		fw.println(u.id+" "+u.pw+" "+u.win+" "+u.loss+" "+u.score+" "+u.winNum+" "+u.tryNum+"\n");
 		fw.close();
-	}
+	}*/
 	
 	public void showJoinForm() {
 		setupLoginFrame();
@@ -176,19 +176,13 @@ public class JoinForm extends JDialog {
 					} else {
 						JOptionPane.showMessageDialog(JoinForm.this, "회원가입을 완료했습니다!");
 						User u = new User();
-						u.id = idTxt.getText();
-						u.pw = pwTxt.getText();
-						u.win = 0;
-						u.loss = 0;
-						u.score = 500;
-						u.winNum = 0;
-						u.tryNum = 0;
+						u.newUser(idTxt.getText(), pwTxt.getText());
 						LoginForm.userData.add(u);
-						try {
+						/*try {
 							addUser(u);
 						} catch (IOException e) {
 							e.printStackTrace();
-						}
+						}*/
 						dispose();
 						loginForm.setVisible(true);
 					}

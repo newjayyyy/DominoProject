@@ -1,5 +1,8 @@
 package account;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class User {
@@ -10,6 +13,7 @@ public class User {
 	int score;
 	int winNum;
 	int tryNum;
+	int index;
 	
 	public void read(Scanner scan) {
 		id = scan.next();
@@ -19,6 +23,31 @@ public class User {
 		score = scan.nextInt();
 		winNum = scan.nextInt();
 		tryNum = scan.nextInt();
+	}
+	
+	public void newUser(String id, String pw) {
+		this.id = id;
+		this.pw = pw;
+		win = 0;
+		loss = 0;
+		score = 500;
+		winNum = 0;
+		tryNum = 0;
+	}
+	
+	public String printName() {
+		return id;
+	}
+	
+	public String printWinLoss() {
+		return "win: "+win+" loss: "+loss;
+	}
+	
+	public void printToTxt()throws IOException {
+		PrintWriter fw = new PrintWriter(new FileWriter("login.txt", true));
+		System.out.println();
+		fw.println(id+" "+pw+" "+win+" "+loss+" "+score+" "+winNum+" "+tryNum);
+		fw.close();
 	}
 
 }

@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextPane;
 
+import account.LoginForm;
+
 public class Page extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -51,12 +53,14 @@ public class Page extends JFrame {
 		Panel.add(headPane, BorderLayout.NORTH);
 		
 		// 파일 입출력으로 파일 불러오면 아이디 표시되는 걸로 바꿀 예정
-		JLabel userPane = new JLabel("- id:dominouser");
+		//myData에서 이름 출력
+		JLabel userPane = new JLabel(LoginForm.myData.printName());
 		userPane.setFont(new Font("Arial",Font.PLAIN, 30));
 		userPane.setBounds(160, 380, 250, 50);
 		Panel.add(userPane);
 		// 파일 입출력으로 파일 불러오면 전적(OO승 OO패)이 업데이트 되는 걸로 바꿀예정
-		JLabel recordPane = new JLabel("- win:10 lose:11");
+		//myData에서 전적 출력
+		JLabel recordPane = new JLabel(LoginForm.myData.printWinLoss());
 		recordPane.setFont(new Font("Arial",Font.PLAIN, 30));
 		recordPane.setBounds(160, 430, 250, 50);
 		Panel.add(recordPane);
