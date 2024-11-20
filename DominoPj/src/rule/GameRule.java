@@ -72,7 +72,7 @@ public class GameRule extends JFrame {
 			
 			}
 			});
-		btnPrev.setBounds(390, 580, 40, 40);
+		btnPrev.setBounds(70, 275, 40, 40);
 		contentPane.add(btnPrev);
 		
 		//next 버튼
@@ -97,7 +97,7 @@ public class GameRule extends JFrame {
 			lb.setIcon(new ImageIcon(currentImg));
 			}
 		});
-		btnNext.setBounds(580, 580, 40, 40);
+		btnNext.setBounds(890, 275, 40, 40);
 		contentPane.add(btnNext);
 		
 		//back 버튼
