@@ -19,12 +19,17 @@ public class GameRule extends JFrame {
 	private JPanel contentPane;
 	private int index; //현재 인덱스
 	private static final String[] IMAGES= {
-		"imgs/rule_1.jpg",
-		"imgs/rule_2.jpg",
-		"imgs/rule_3.jpg",
-		"imgs/rule_4.jpg",
-		"imgs/rule_5.jpg",
-		"imgs/rule_6.jpg"
+		"imgs/rule_1.png",
+		"imgs/rule_2.png",
+		"imgs/rule_3.png",
+		"imgs/rule_4.png",
+		"imgs/rule_5.png",
+		"imgs/rule_6.png",
+		"imgs/rule_7.png",
+		"imgs/rule_8.png",
+		"imgs/rule_9.png",
+		"imgs/rule_10.png",
+		"imgs/rule_11.png"
 	};
 	
 	//이미지 크기 조정 함수
@@ -43,7 +48,7 @@ public class GameRule extends JFrame {
 		
 		ImageIcon changeIcon = new ImageIcon(setScale(0));
 		JLabel lb = new JLabel(changeIcon);
-		lb.setBounds(125, 50, 750, 500);
+		lb.setBounds(125, 80, 750, 500);
 		contentPane.add(lb);
 		
 		//버튼 이미지
@@ -72,7 +77,7 @@ public class GameRule extends JFrame {
 			
 			}
 			});
-		btnPrev.setBounds(70, 275, 40, 40);
+		btnPrev.setBounds(70, 305, 40, 40);
 		contentPane.add(btnPrev);
 		
 		//next 버튼
@@ -97,7 +102,7 @@ public class GameRule extends JFrame {
 			lb.setIcon(new ImageIcon(currentImg));
 			}
 		});
-		btnNext.setBounds(890, 275, 40, 40);
+		btnNext.setBounds(890, 305, 40, 40);
 		contentPane.add(btnNext);
 		
 		//back 버튼
@@ -115,7 +120,7 @@ public class GameRule extends JFrame {
 				mainFrame.setVisible(true);
 			}
 		});
-		btnBack.setBounds(440, 570, 130, 60);
+		btnBack.setBounds(440, 600, 130, 60);
 		contentPane.add(btnBack);
 		
 		
