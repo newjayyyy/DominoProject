@@ -178,6 +178,10 @@ public class LoginForm extends JFrame {
 						myData = list;
 						myData.index = userData.indexOf(list);
 						//dispose();
+						
+						//id, pw 빈칸으로 만들기
+						idField.setText("");
+						pwField.setText("");
 
 						// mainPage 다시 보이기
 						cardLayout.show(mainPanel, "MainPage");
