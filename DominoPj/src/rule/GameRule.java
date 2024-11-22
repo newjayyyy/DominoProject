@@ -1,6 +1,8 @@
 package rule;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
@@ -12,11 +14,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
-public class GameRule extends JFrame {
+public class GameRule extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private JPanel gameRulePanel;
 	private int index; //현재 인덱스
 	private static final String[] IMAGES= {
 		"imgs/rule_1.png",
@@ -41,15 +44,15 @@ public class GameRule extends JFrame {
 	}
 	
 	
-	public GameRule(JFrame mainFrame) {
+	public JPanel createGameRule(JPanel mainPanel,CardLayout cardLayout) {
 		
-		contentPane=new JPanel();
-		contentPane.setLayout(null);
+		gameRulePanel=new JPanel();
+		gameRulePanel.setLayout(null);
 		
 		ImageIcon changeIcon = new ImageIcon(setScale(0));
 		JLabel lb = new JLabel(changeIcon);
 		lb.setBounds(125, 80, 750, 500);
-		contentPane.add(lb);
+		gameRulePanel.add(lb);
 		
 		//버튼 이미지
 		ImageIcon prevImg=new ImageIcon("imgs/prev.png");
@@ -78,7 +81,7 @@ public class GameRule extends JFrame {
 			}
 			});
 		btnPrev.setBounds(70, 305, 40, 40);
-		contentPane.add(btnPrev);
+		gameRulePanel.add(btnPrev);
 		
 		//next 버튼
 		Image nImg=nextImg.getImage();
@@ -103,7 +106,7 @@ public class GameRule extends JFrame {
 			}
 		});
 		btnNext.setBounds(890, 305, 40, 40);
-		contentPane.add(btnNext);
+		gameRulePanel.add(btnNext);
 		
 		//back 버튼
 		Image bImg=backImg.getImage();
@@ -113,21 +116,20 @@ public class GameRule extends JFrame {
 		btnBack.setContentAreaFilled(false);
 		btnBack.setBorderPainted(false);
 		btnBack.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				dispose();
-				
-				//mainPage 다시 보이기
-				mainFrame.setVisible(true);
-			}
-		});
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "MainPage"); // 메인 페이지로 돌아가기
+            }
+        });
 		btnBack.setBounds(440, 600, 130, 60);
-		contentPane.add(btnBack);
+		gameRulePanel.add(btnBack);
 		
 		
-		setTitle("게임설명");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		//mainFrame.setDefaultCloseOperation(contentPane.EXIT_ON_CLOSE);
 		
 		setSize(1000,800);
-		add(contentPane);
+		return gameRulePanel;
 	}
+	
 }

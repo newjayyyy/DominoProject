@@ -316,8 +316,8 @@ public class Player {
 				});
 				domino.gamepane.add(ifr);
 				// 레이아웃 갱신 후 화면 업데이트
-		        domino.mainFrame.revalidate(); // 레이아웃 재계산
-		        domino.mainFrame.repaint();    // 화면을 다시 그리기
+		        domino.gamePanel.revalidate(); // 레이아웃 재계산
+		        domino.gamePanel.repaint();    // 화면을 다시 그리기
 				return;
 				
 			} else if (t.tilematches_left(domino.mostleft)) {
@@ -340,8 +340,8 @@ public class Player {
 				});
 				domino.gamepane.add(ifl);
 				// 레이아웃 갱신 후 화면 업데이트
-		        domino.mainFrame.revalidate(); // 레이아웃 재계산
-		        domino.mainFrame.repaint();    // 화면을 다시 그리기
+		        domino.gamePanel.revalidate(); // 레이아웃 재계산
+		        domino.gamePanel.repaint();    // 화면을 다시 그리기
 				return;
 			}
 		}
@@ -595,7 +595,7 @@ public class Player {
 	void updateInfo(DominoUI domino,String message) {
 		Component[] components = domino.infopane.getComponents();
 		int totalComponents = components.length;
-		if(components.length>=3)domino.infopane.remove(components[components.length-1]);
+		if(components.length>=2)domino.infopane.remove(components[components.length-1]);
 		JLabel msglb=new JLabel(message);
 		msglb.setFont(domino.infofont);
 		msglb.setBounds(500-message.length()*10, 0, message.length()*20, 50);

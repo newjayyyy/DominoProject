@@ -6,13 +6,13 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class User {
-	String id;
+	public String id;
 	String pw;
-	int win;
-	int loss;
-	int score;
-	int winNum;
-	int tryNum;
+	public int win;
+	public int loss;
+	public int score;
+	public int winNum;
+	public int tryNum;
 	int index;
 	
 	public void read(Scanner scan) {

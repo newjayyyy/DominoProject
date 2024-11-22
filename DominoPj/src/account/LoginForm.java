@@ -1,6 +1,7 @@
 package account;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -58,21 +60,27 @@ public class LoginForm extends JFrame {
 	private JButton loginbutton;
 	private JButton joinButton;
 	private JButton findButton;
+	
+	private JPanel loginForm;
 
-	public void showLoginForm() {
+	public JPanel showLoginForm(JFrame mainFrame,JPanel mainPanel,CardLayout cardLayout) {
 
-		MainPage mainPageFrame = new MainPage();
+		loginForm=new JPanel();
 		if (userData.isEmpty())
 			readAll("login.txt");
-		setupLoginFrame();
-		addListners(mainPageFrame);
-		setTitle("Dominos");
+		loginForm=setupLoginFrame();
+		
+		//loginForm.setLayout(new BoxLayout(loginForm, BoxLayout.Y_AXIS));
+		addListners(mainFrame,mainPanel,cardLayout);
+		/*setTitle("Dominos");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(330, 430));
 		pack();
 		setLocationRelativeTo(null);
 		setResizable(false);
-		setVisible(true);
+		setVisible(true);*/
+		
+		return loginForm;
 	}
 
 	public ImageIcon changeImgSize(ImageIcon imgIcon, int w, int h) {
@@ -90,7 +98,7 @@ public class LoginForm extends JFrame {
 		button.setFocusPainted(false);
 	}
 
-	public void setupLoginFrame() {
+	public JPanel setupLoginFrame() {
 		idLabel = new JLabel("아이디", JLabel.CENTER);
 		pwLabel = new JLabel("비밀번호", JLabel.CENTER);
 
@@ -137,18 +145,23 @@ public class LoginForm extends JFrame {
 		setButtonImg(findButton, findImg2, findImg3);
 		southPanel.add(findButton);
 
-		add(northPanel, BorderLayout.NORTH);
-		add(centerPanel, BorderLayout.CENTER);
-		add(southPanel, BorderLayout.SOUTH);
+		
+		loginForm.add(northPanel, BorderLayout.NORTH);
+		loginForm.add(centerPanel, BorderLayout.CENTER);
+		loginForm.add(southPanel, BorderLayout.SOUTH);
+		
+		return loginForm;
 	}
 
-	public void addListners(JFrame mainFrame) {
+	public void addListners(JFrame mainFrame,JPanel mainPanel,CardLayout cardLayout) {
 
 		joinButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
+				//setVisible(false);
 				JoinForm join = new JoinForm(LoginForm.this);
-				join.showJoinForm();
+				JPanel joinFormPanel=join.showJoinForm(mainFrame,mainPanel,cardLayout);
+				mainPanel.add(joinFormPanel,"회원가입페이지");
+				cardLayout.show(mainPanel, "회원가입페이지");
 				idField.setText("");
 				pwField.setText("");
 			}
@@ -164,10 +177,13 @@ public class LoginForm extends JFrame {
 						// id와 pw가 일치하면 현재 객체를 myData에 저장
 						myData = list;
 						myData.index = userData.indexOf(list);
-						dispose();
+						//dispose();
 
 						// mainPage 다시 보이기
-						mainFrame.setVisible(true);
+						cardLayout.show(mainPanel, "MainPage");
+						mainFrame.setSize(1000,800);
+						mainFrame.setLocationRelativeTo(null);  
+						
 						break;
 					}
 				}
@@ -181,25 +197,31 @@ public class LoginForm extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				FindForm find = new FindForm(LoginForm.this);
-				find.showJoinForm();
+				JPanel findFormPanel=find.showFindForm(mainFrame,mainPanel,cardLayout);
+				mainPanel.add(findFormPanel,"회원가입페이지");
+				cardLayout.show(mainPanel, "회원가입페이지");
 				idField.setText("");
 				pwField.setText("");
 			}
 		});
 
-		// 화면 종료시 login.txt에 저장하는 함수 호출 후 종료
+		/* 화면 종료시 login.txt에 저장하는 함수 호출 후 종료
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent we) {
 				saveUserData();
 				dispose();
 			}
-		});
+		});*/
+
+		saveUserData(); //////////////////////////////////버그: 패널 전환 시 login.txt에 데이터 저장이 되야하는데 안됨
+		
+		   
 
 	}
 	
 	//userData에 myData저장 후 userData를 login.txt에 출력
 	public void saveUserData() {
-		userData.set(myData.index, myData);
+		//userData.set(myData.index, myData);
 		try {
 			new FileWriter("login.txt", false).close();
 		} catch (IOException e) {
@@ -213,7 +235,10 @@ public class LoginForm extends JFrame {
 			}
 		}
 	}
-
+	//userData에 myData저장
+	/*   public void saveMyData() {
+	      userData.set(myData.index, myData);
+	   }*/
 	/*
 	 * public static void main(String[] args) {
 	 * 

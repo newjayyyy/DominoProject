@@ -1,6 +1,7 @@
 package account;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -15,6 +16,7 @@ import java.io.PrintWriter;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -33,6 +35,8 @@ public class FindForm extends JDialog {
 	private JButton findButton;
 	private JButton cancelButton;
 	private JPanel centerPanel;
+	
+	private JPanel findForm;
 
 	public FindForm(LoginForm loginForm) {
 		this.loginForm = loginForm;
@@ -53,19 +57,22 @@ public class FindForm extends JDialog {
 		button.setFocusPainted(false);
 	}
 
-	public void showJoinForm() {
-		setupLoginFrame();
-		setTitle("Dominos");
-		addListeners();
+	public JPanel showFindForm(JFrame mainFrame,JPanel mainPanel,CardLayout cardLayout) {
+		findForm=new JPanel();
+		findForm=setupFindFrame();
+		addListeners(mainFrame,mainPanel,cardLayout);
+		/*setTitle("Dominos");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setPreferredSize(new Dimension(330, 190));
 		pack();
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setVisible(true);
+		*/
+		return findForm;
 	}
 
-	private void setupLoginFrame() {
+	private JPanel setupFindFrame() {
 		
 		ImageIcon findBtn = changeImgSize(new ImageIcon("imgsLogin/findBtn.png"), 90, 30);
 		ImageIcon findBtn2 = changeImgSize(new ImageIcon("imgsLogin/findBtn2.png"), 90, 30);
@@ -100,9 +107,11 @@ public class FindForm extends JDialog {
 		setButtonImg(cancelButton, cancelBtn2, cancelBtn3);
 		southPanel.add(cancelButton);
 
-		add(northPanel, BorderLayout.NORTH);
-		add(centerPanel, BorderLayout.CENTER);
-		add(southPanel, BorderLayout.SOUTH);
+		findForm.add(northPanel, BorderLayout.NORTH);
+		findForm.add(centerPanel, BorderLayout.CENTER);
+		findForm.add(southPanel, BorderLayout.SOUTH);
+		
+		return findForm;
 
 	}
 
@@ -115,20 +124,25 @@ public class FindForm extends JDialog {
 		return result;
 	}
 
-	private void addListeners() {
+	private void addListeners(JFrame mainFrame,JPanel mainPanel,CardLayout cardLayout) {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent we) {
-				dispose();
-				loginForm.setVisible(true);
+				//dispose();
+				//loginForm.setVisible(true);
+				cardLayout.show(mainPanel, "로그인페이지");
+				mainFrame.setSize(600, 400);
+		        mainFrame.setLocationRelativeTo(null);
 			}
 		});
 
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				dispose();
-				loginForm.setVisible(true);
+				//dispose();
+				cardLayout.show(mainPanel, "로그인페이지");
+				mainFrame.setSize(600, 400);
+		        mainFrame.setLocationRelativeTo(null); 
 			}
 		});
 
@@ -140,8 +154,9 @@ public class FindForm extends JDialog {
 					for (User list : LoginForm.userData) {
 						if (list.id.equals(idTxt.getText())) {
 							JOptionPane.showMessageDialog(FindForm.this, "비밀번호는 " + list.pw + " 입니다.");
-							dispose();
-							loginForm.setVisible(true);
+							//dispose();
+							//loginForm.setVisible(true);
+							cardLayout.show(mainPanel, "로그인페이지");
 							return;
 						}
 					}

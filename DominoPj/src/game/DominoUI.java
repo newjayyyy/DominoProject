@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -30,6 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import main.MainPage;
 
 
 
@@ -37,7 +39,9 @@ import javax.swing.border.Border;
 
 
 
-public class DominoUI extends JFrame{
+
+public class DominoUI extends JPanel{
+	
 	
 	Scanner scan=new Scanner(System.in);
 	Random rand=new Random();
@@ -65,12 +69,12 @@ public class DominoUI extends JFrame{
 			e.printStackTrace();
 		}
 	}
-	
-	void gameset(JFrame mainPageFrame) {
+	//수정
+	void gameset() {
 		mypane=setupMyPanel();
 		Drpane=setupDrawPanel();
 		CPpane=setupCPPanel();
-		infopane=setupInfoPanel(mainPageFrame);
+		infopane=setupInfoPanel();
 		waiting();
 		makeTile();
 		Collections.shuffle(TileList);
@@ -98,10 +102,12 @@ public class DominoUI extends JFrame{
 			}
 		}
 	}
-	void gameend() {
+	void gameend(JPanel mainPanel,CardLayout cardLayout) {
 		int winner;
 		boolean endcase=false;
 		String gameresult;
+		me.sum=0;
+		CP.sum=0;
 		me.makesum();
 		CP.makesum();
 		if(me.ptList.size()!=0&&CP.ptList.size()!=0) {
@@ -111,10 +117,12 @@ public class DominoUI extends JFrame{
 		if (me.ptList.size() == 0 || me.sum < CP.sum) {
 			winner = 0;
 			gameresult="승리";
+			win=win+1;
 			if(me.ptList.size()!=0) endcase=true;
 		} else if (CP.ptList.size() == 0 || me.sum > CP.sum) {
 			winner = 1;
 			gameresult="패배";
+			lose=lose+1;
 			if(CP.ptList.size()!=0) endcase=true;
 		} else {
 			winner = -1;
@@ -153,33 +161,47 @@ public class DominoUI extends JFrame{
 			gamepane.add(mysumlb);
 			gamepane.add(CPsumlb);
 		}
-		JButton replay = new JButton("다시하기");
-		JButton outgame = new JButton("돌아가기");
-		replay.setFont(minikrfont);
+		if (modenum == 0) {
+			JButton replay = new JButton("다시하기");
+			replay.setFont(minikrfont);
+			replay.setBackground(Color.white);
+			replay.setOpaque(true);
+			replay.setBounds(455, 380, 100, 20);
+			replay.addActionListener(new ActionListener() {
+			    @Override
+			    public void actionPerformed(ActionEvent e) {
+			        // 버튼 클릭 시 호출될 메소드
+			        synchronized (lock1) {
+			            lock1.notify();  // lock1의 모니터를 획득하고 notify 호출
+			        }
+			        stopgame=false;
+			        reset(mainPanel,cardLayout);
+			    }
+			});
+			gamepane.add(replay);
+			gamepane.revalidate();
+			gamepane.repaint();
+		}
+		
+		
+		String endmsg="돌아가기";
+		if(modenum==1) {
+			endmsg="계속하기";
+			if(winner==0) me.score+=CP.sum;
+		}
+		
+		JButton outgame = new JButton(endmsg);
+		
 		outgame.setFont(minikrfont);
-		replay.setBackground(Color.white);
-		replay.setOpaque(true);
 		outgame.setBackground(Color.white);
 		outgame.setOpaque(true);
 
-		replay.setBounds(455, 380, 100, 20);
 		outgame.setBounds(455, 420, 100, 20);
-		gamepane.add(replay);
 		gamepane.add(outgame);
 		gamepane.revalidate();
 		gamepane.repaint();
 
-		replay.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        // 버튼 클릭 시 호출될 메소드
-		        synchronized (lock1) {
-		            lock1.notify();  // lock1의 모니터를 획득하고 notify 호출
-		        }
-		        stopgame=false;
-		        reset();
-		    }
-		});
+		
 
 		outgame.addActionListener(new ActionListener() {
 		    @Override
@@ -304,7 +326,7 @@ public class DominoUI extends JFrame{
 		return false;
 	}
 	
-	void reset() {
+	public void reset(JPanel mainPanel,CardLayout cardLayout) {
 		TileList.clear();
 		gameTile.clear();
 		me.ptList.clear();
@@ -316,16 +338,28 @@ public class DominoUI extends JFrame{
 		lgtile=0;
 		rgtile=0;
 	
+		gamePanel=new JPanel();
 		// 모든 컴포넌트 제거
-	    Container contentPane = mainFrame.getContentPane();
-	    contentPane.removeAll(); // 모든 컴포넌트를 제거
+	    
+	    Container contentPane = gamePanel.getRootPane(); // gamePanel이 null이 아닌지 확인 후 접근
+	    if (contentPane != null) {
+	        contentPane.removeAll(); // 모든 컴포넌트를 제거
+	        contentPane.revalidate(); // 레이아웃을 다시 계산
+	        contentPane.repaint();    // 화면을 다시 그리기
+	    }
+	    /*contentPane.removeAll(); // 모든 컴포넌트를 제거
 	    contentPane.revalidate(); // 레이아웃을 다시 계산
 	    contentPane.repaint();    // 화면을 다시 그리기
-	    mainFrame.dispose();
+	    //mainFrame.dispose();
+	    //cardLayout.show(mainPanel, "게임");
+	    gamePanel.add(contentPane);*/
 	 
-		mainFrame.repaint(); // UI 재그리기
-        mainFrame.pack();    // 프레임 크기 다시 설정
-        mainFrame.setVisible(true); // 화면에 보이도록 설정
+		gamePanel.repaint(); // UI 재그리기
+		//mainPanel.add(gamePanel,"게임");
+		//cardLayout.show(mainPanel, " 게임");
+        //gamePanel.pack();    // 프레임 크기 다시 설정
+        //gamePanel.setVisible(true); // 화면에 보이도록 설정
+		
 	}
 	
 	
@@ -341,68 +375,84 @@ public class DominoUI extends JFrame{
 	JPanel infopane;
     ArrayList<JLabel> imageList = new ArrayList<>(); // 이미지 레이블 리스트
     
-	public void startGUI(JFrame mainPageFrame) {
+    //여기서 '게임'으로 화면이 전환됨
+	public void startGUI(MainPage mainPage,JPanel mainPanel,CardLayout cardLayout) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				createAndShowGUI(mainPageFrame);
+				 gamePanel=createAndShowGUI();
+				 mainPanel.add(gamePanel,"게임");
+				 cardLayout.show(mainPanel,"게임");
+				 mainPage.setSize(1500, 850);
+				 mainPage.setLocationRelativeTo(null); 
 			}
+			
 		});
+		
 	}
 	
-	static JFrame mainFrame=new JFrame("Domino");
+	//static JFrame mainFrame=new JFrame("Domino");
+	static JPanel gamePanel; //game에서의 메인 패널. 
 	static DominoUI main=null;
 	
-	private void createAndShowGUI(JFrame mainPageFrame) {
-		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	//수정할 부분
+	private JPanel createAndShowGUI() {
+		//mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mypane = setupMyPanel();
 		CPpane = setupCPPanel();
 		Drpane = setupDrawPanel();
 		gamepane= setupGamePanel();
-		infopane= setupInfoPanel(mainPageFrame);
-		mainFrame.setPreferredSize(new Dimension(1000, 820));
+		infopane= setupInfoPanel();
+		//mainFrame.setPreferredSize(new Dimension(1500, 800));
 
 	    // 레이아웃을 null로 설정하여 절대 위치 사용
-	    mainFrame.setLayout(null);  // null 레이아웃으로 설정
+	    gamePanel.setLayout(null);  // null 레이아웃으로 설정
 
 	    // mypane의 위치와 크기 설정 (아래쪽에 배치)
 	    mypane.setPreferredSize(new Dimension(1000, 180));
-	    mypane.setBounds(0, 900, 1000, 180);  // (x, y, width, height)
-
+	    mypane.setBounds(0, 900, 1000, 180);
+	    
 	    // CPpane의 위치와 크기 설정 (위쪽에 배치)
 	    CPpane.setPreferredSize(new Dimension(1000, 100));
 	    CPpane.setBounds(0, 0, 1000, 100);  // (x, y, width, height)
-
+	    
+	    
 	    // Drpane의 위치와 크기 설정 (오른쪽에 배치)
 	    Drpane.setPreferredSize(new Dimension(100, 450));
-	    Drpane.setBounds(1300, 0, 100, 450);  // (x, y, width, height)
+	    Drpane.setBounds(1300, 0, 100, 450);// (x, y, width, height)
+	    
 
 	    // gamepane의 위치와 크기 설정 (가운데 배치)
 	    gamepane.setPreferredSize(new Dimension(900, 450));
 	    gamepane.setBounds(0, 150, 900, 450);  // (x, y, width, height)
 	    
+	    
 	    infopane.setPreferredSize(new Dimension(1000,50));
 	    infopane.setBounds(0, 730, 1000, 50);
+	    
 
-	    // 각 패널을 프레임에 추가
-	    mainFrame.add(mypane);
-	    mainFrame.add(CPpane);
-	    mainFrame.add(Drpane);
-	    mainFrame.add(gamepane);
-	    mainFrame.add(infopane);
-	    mainFrame.addComponentListener(new ComponentAdapter() {
+	    // gamePanel에 추가
+	    gamePanel.add(mypane);
+	    gamePanel.add(CPpane);
+	    gamePanel.add(Drpane);
+	    gamePanel.add(gamepane);
+	    gamePanel.add(infopane);
+	    
+	    gamePanel.addComponentListener(new ComponentAdapter() {
 	        @Override
 	        public void componentResized(ComponentEvent e) {
 	            adjustPanelPositions(mypane, CPpane, Drpane, gamepane, infopane);
 	        }
 	    });
-		mainFrame.pack();
-		mainFrame.setVisible(true);
+		//gamePanel.pack();
+		//mainFrame.setVisible(true);
+	   
+	    return gamePanel;
 		
 	}
 	public void adjustPanelPositions(JPanel mypane, JPanel CPpane, JPanel Drpane, JPanel gamepane, JPanel infopane) {
 	    // 프레임의 현재 크기
-		int frameWidth = mainFrame.getWidth();
-	    int frameHeight = mainFrame.getHeight();
+		int frameWidth = gamePanel.getWidth();
+	    int frameHeight = gamePanel.getHeight();
 
 	    // 각 패널의 가로 위치만 중앙으로 정렬
 	    int mypaneX = (frameWidth - 1000) / 2;  // mypane의 가로 중앙
@@ -421,8 +471,8 @@ public class DominoUI extends JFrame{
 	    infopane.setBounds(infopaneX, 730, 1000, 50);
 
 	    // 레이아웃 업데이트
-	    mainFrame.revalidate();
-	    mainFrame.repaint();
+	    gamePanel.revalidate();
+	    gamePanel.repaint();
 	}
 	
 	
@@ -494,7 +544,7 @@ public class DominoUI extends JFrame{
 	    gamepane.setLayout(null);
 		return gamepane;
 	}
-	JPanel setupInfoPanel(JFrame mainPageFrame) {
+	JPanel setupInfoPanel() {
 		JPanel infopane=new JPanel() {
 			protected void paintComponent(Graphics g) {
 		        super.paintComponent(g); // JPanel의 기본 페인팅을 호출하여 배경을 그리도록 함
@@ -508,67 +558,83 @@ public class DominoUI extends JFrame{
 		infopane.setBackground(Color.white);
 		infopane.setPreferredSize(new Dimension(1000,50));
 		
-		//String modest="도전모드("+0+"/"+4+")";
-		String modest="일반모드";
+		String modest=null;
+		if(modenum==0)modest="일반모드";
+		else if(modenum==1) modest="도전모드("+(win+1)+"/"+ChallengeGoal+")";
 		JLabel mode=new JLabel(modest);
 		mode.setFont(infofont);
 		mode.setBounds(5, 0, modest.length()*20, 50);
 		
-		JButton surrender=new JButton("포기");
-		surrender.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // 확인 창 띄우기
-                int response = JOptionPane.showConfirmDialog(mainFrame, "포기하시겠습니까?", "확인", JOptionPane.YES_NO_OPTION);
-
-                // '예'를 클릭한 경우 프로그램 종료
-                if (response == JOptionPane.YES_OPTION) {
-                	mainFrame.dispose();
-                	mainPageFrame.setVisible(true);
-                	//System.exit(0)을 사용하면 프로그램이 아예 종료가 되는 버그 생김. 초기화 메서드 사용?
-                    System.exit(0); // 프로그램 종료===================================종료
-                }
-                // '아니오'를 클릭한 경우 아무 일도 하지 않음
-                else if (response == JOptionPane.NO_OPTION) {
-                    // 아무것도 하지 않음
-                }
-            }
-        });
-		surrender.setBounds(880, 5, 100, 40);
-		surrender.setBackground(Color.white);
 		
 		infopane.add(mode);
-		infopane.add(surrender);
 		infopane.setLayout(null);
 		return infopane;
 	}
+	public static int win;
+	public static int lose;
+	static int modenum=1;
 	
-	//public static을 없애고 다른 함수 해야함.
-	public void gameMain(JFrame mainPageFrame) {
+	//일반모드
+	public double PlayNormal(MainPage mainPage,DominoUI main,JPanel mainPanel,CardLayout cardLayout) {
+		win=0;
+		lose=0;
+		modenum=0;
 		while(true) {
-			main = new DominoUI();
-			main.startGUI(mainPageFrame);
-			main.gameset(mainPageFrame);
-			main.gamestart();
-			main.gameend();
-			if (stopgame)
-				break;
-
-		}
-		mainFrame.dispose();	//====================================================종료
-	}
-	
-	/*public static void main(String[] args) {
-		while(true) {
-			main = new DominoUI();
-			main.startGUI();
+			main.reset(mainPanel,cardLayout);
+			//mainFrame.dispose();
+		    main.startGUI(mainPage,mainPanel,cardLayout); 
 			main.gameset();
 			main.gamestart();
-			main.gameend();
+			main.gameend(mainPanel,cardLayout);
 			if (stopgame)
 				break;
-
 		}
-		mainFrame.dispose();	//====================================================종료
-	}*/
+		//mainFrame.dispose();
+		cardLayout.show(mainPanel,"MainPage");
+		mainPage.setSize(1000, 800);
+		mainPage.setLocationRelativeTo(null);
+		String str=win+"."+lose;
+		return Double.parseDouble(str);
+	}
+	
+	static int ChallengeGoal;
+	public int PlayChallenge(MainPage mainPage,DominoUI main,int goal,JPanel mainPanel,CardLayout cardLayout) {
+		modenum=1;
+		win=0;
+		lose=0;
+		ChallengeGoal=goal;
+		me.score=0;
+		String msg=String.format("%d연승에 도전합니다", goal);
+		JOptionPane.showMessageDialog(null, msg, "도전모드", JOptionPane.INFORMATION_MESSAGE);
+		for(int i=1;i<=goal;i++) {
+			//게임 시작전에 리셋
+			main = new DominoUI();
+			main.reset(mainPanel,cardLayout);
+			//mainFrame.dispose();
+			//여기서부터 게임시작
+			main.startGUI(mainPage,mainPanel,cardLayout);
+			main.gameset();
+			main.gamestart();
+			main.gameend(mainPanel,cardLayout);
+			if(lose>=1) {
+				msg=String.format("도전실패(-%d점)", (goal-1)*50);
+				JOptionPane.showMessageDialog(null, msg, "도전모드", JOptionPane.INFORMATION_MESSAGE);
+				//mainFrame.dispose();
+				cardLayout.show(mainPanel, "MainPage");
+				mainPage.setSize(1000, 800);
+				mainPage.setLocationRelativeTo(null);
+				return -win;
+			}
+		}
+		msg=String.format("도전성공(+%d점)", (goal-1)*50);
+		JOptionPane.showMessageDialog(null, msg, "도전모드", JOptionPane.INFORMATION_MESSAGE);
+		//mainFrame.dispose();
+		cardLayout.show(mainPanel, "MainPage");
+		mainPage.setSize(1000, 800);
+		mainPage.setLocationRelativeTo(null);
+		
+		return me.score;
+	}
+	
+
 }

@@ -1,6 +1,7 @@
 package account;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -15,6 +16,7 @@ import java.io.PrintWriter;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -38,7 +40,8 @@ public class JoinForm extends JDialog {
 	private JButton cancelButton;
 	private JPanel centerPanel;
 	
-
+	private JPanel joinForm;
+	
 	public JoinForm(LoginForm loginForm) {
 		this.loginForm = loginForm;
 	}
@@ -50,16 +53,19 @@ public class JoinForm extends JDialog {
 		fw.close();
 	}*/
 	
-	public void showJoinForm() {
-		setupLoginFrame();
-		setTitle("Dominos");
-		addListeners();
+	public JPanel showJoinForm(JFrame mainFrame,JPanel mainPanel,CardLayout cardLayout) {
+		
+		joinForm=new JPanel();
+		joinForm=setupJoinFrame();
+		addListeners(mainFrame,mainPanel,cardLayout);
+		/*setTitle("Dominos");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setPreferredSize(new Dimension(330, 290));
 		pack();
 		setResizable(false);
 		setLocationRelativeTo(null);
-		setVisible(true);
+		setVisible(true);*/
+		return joinForm;
 	}
 	
 	public ImageIcon changeImgSize(ImageIcon imgIcon, int w, int h) {
@@ -77,7 +83,7 @@ public class JoinForm extends JDialog {
 		button.setFocusPainted(false);
 	}
 
-	private void setupLoginFrame() {
+	private JPanel setupJoinFrame() {
 		ImageIcon joinBtn = changeImgSize(new ImageIcon("imgsLogin/joinBtn.png"), 90, 30);
 		ImageIcon joinBtn2 = changeImgSize(new ImageIcon("imgsLogin/joinBtn2.png"), 90, 30);
 		ImageIcon joinBtn3 = changeImgSize(new ImageIcon("imgsLogin/joinBtn3.png"), 90, 30);
@@ -118,9 +124,10 @@ public class JoinForm extends JDialog {
 		setButtonImg(cancelButton, cancelBtn2, cancelBtn3);
 		southPanel.add(cancelButton);
 
-		add(northPanel, BorderLayout.NORTH);
-		add(centerPanel, BorderLayout.CENTER);
-		add(southPanel, BorderLayout.SOUTH);
+		joinForm.add(northPanel, BorderLayout.NORTH);
+		joinForm.add(centerPanel, BorderLayout.CENTER);
+		joinForm.add(southPanel, BorderLayout.SOUTH);
+		return joinForm;
 
 	}
 
@@ -141,20 +148,25 @@ public class JoinForm extends JDialog {
 		return result;
 	}
 
-	private void addListeners() {
+	private void addListeners(JFrame mainFrame,JPanel mainPanel,CardLayout cardLayout) {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent we) {
-				dispose();
-				loginForm.setVisible(true);
+				//dispose();
+				//loginForm.setVisible(true);
+				cardLayout.show(mainPanel, "로그인페이지");
+				mainFrame.setSize(330, 290);
+		        mainFrame.setLocationRelativeTo(null); 
 			}
 		});
 
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				dispose();
-				loginForm.setVisible(true);
+				//dispose();
+				cardLayout.show(mainPanel, "로그인페이지");
+				mainFrame.setSize(600, 400);
+		        mainFrame.setLocationRelativeTo(null); 
 			}
 		});
 
@@ -183,8 +195,11 @@ public class JoinForm extends JDialog {
 						} catch (IOException e) {
 							e.printStackTrace();
 						}*/
-						dispose();
-						loginForm.setVisible(true);
+						//dispose();
+						//loginForm.setVisible(true);
+						cardLayout.show(mainPanel, "로그인페이지");
+						mainFrame.setSize(600, 400);
+				        mainFrame.setLocationRelativeTo(null); 
 					}
 				}
 			}

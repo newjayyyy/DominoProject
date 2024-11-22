@@ -178,8 +178,8 @@ public class CPPlayer extends Player {
 			domino.lgtile++;
 			domino.gamepane.add(toput);
 			// 레이아웃 갱신 후 화면 업데이트
-	        domino.mainFrame.revalidate(); // 레이아웃 재계산
-	        domino.mainFrame.repaint();    // 화면을 다시 그리기
+	        domino.gamePanel.revalidate(); // 레이아웃 재계산
+	        domino.gamePanel.repaint();    // 화면을 다시 그리기
 	        return;
 		}
 		else if(t.leftnum==domino.mostright||t.rightnum==domino.mostright) {				//오른쪽에 붙이기
@@ -222,16 +222,16 @@ public class CPPlayer extends Player {
 			domino.rgtile++;
 			domino.gamepane.add(toput);
 			// 레이아웃 갱신 후 화면 업데이트
-	        domino.mainFrame.revalidate(); // 레이아웃 재계산
-	        domino.mainFrame.repaint(); 	// 화면을 다시 그리기
+	        domino.gamePanel.revalidate(); // 레이아웃 재계산
+	        domino.gamePanel.repaint(); 	// 화면을 다시 그리기
 	        return;
 		}
 		
 		
 		
 		// 레이아웃 갱신 후 화면 업데이트
-        domino.mainFrame.revalidate(); // 레이아웃 재계산
-        domino.mainFrame.repaint();    // 화면을 다시 그리기
+        domino.gamePanel.revalidate(); // 레이아웃 재계산
+        domino.gamePanel.repaint();    // 화면을 다시 그리기
 	}
 
 	void setCPPane(DominoUI domino) {
