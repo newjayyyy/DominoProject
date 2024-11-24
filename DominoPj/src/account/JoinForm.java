@@ -191,6 +191,12 @@ public class JoinForm extends JDialog {
 						u.newUser(idTxt.getText(), pwTxt.getText());
 						LoginForm.userData.add(u);
 						LoginForm.saveUserData();
+						//게임로그파일 생성
+						try {
+							PrintWriter fw = new PrintWriter(new FileWriter("gamelog/"+u.id+".txt", true));
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 						/*try {
 							addUser(u);
 						} catch (IOException e) {

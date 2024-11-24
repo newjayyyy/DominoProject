@@ -46,7 +46,14 @@ public class User {
 	public void printToTxt()throws IOException {
 		PrintWriter fw = new PrintWriter(new FileWriter("login.txt", true));
 		System.out.println();
-		fw.println(id+" "+pw+" "+win+" "+loss+" "+score+" "+winNum+" "+tryNum);
+		fw.printf("%s %s %s %s %s %s %s\n", id, pw, win, loss, score, winNum, tryNum);
+		fw.close();
+	}
+	//게임종류, 모드, 승패, 진행라운드, 플레이타임, 점수변동을 입력받아 gamelog폴더에 아이디txt파일에 출력
+	public void printGameLog(String type, String mod, String winLoss, String round, String time, String scoreChange)throws IOException {
+		PrintWriter fw = new PrintWriter(new FileWriter("gamelog/"+id+".txt", true));
+		System.out.println();
+		fw.printf("%s %s %s %s %s %s\n", type, mod, winLoss, round, time, scoreChange);
 		fw.close();
 	}
 
