@@ -224,7 +224,7 @@ public class LoginForm extends JFrame {
 	}
 	
 	//userData에 myData저장 후 userData를 login.txt에 출력
-	public void saveUserData() {
+	public static void saveUserData() {
 		//userData.set(myData.index, myData);
 		try {
 			new FileWriter("login.txt", false).close();

@@ -190,6 +190,7 @@ public class JoinForm extends JDialog {
 						User u = new User();
 						u.newUser(idTxt.getText(), pwTxt.getText());
 						LoginForm.userData.add(u);
+						LoginForm.saveUserData();
 						/*try {
 							addUser(u);
 						} catch (IOException e) {

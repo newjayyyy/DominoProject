@@ -152,6 +152,7 @@ public class MainPage extends JFrame {
                 if(answer==1) {
                 	
                 	//패널로 변경하면서 수정한 부분
+                	LoginForm.saveUserData();
                 	cardLayout.show(mainPanel, "로그인페이지");
                 	mainPage.setSize(600, 400);
          	        mainPage.setLocationRelativeTo(null); 
