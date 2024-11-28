@@ -3,6 +3,7 @@ package account;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -73,46 +76,46 @@ public class FindForm extends JDialog {
 	}
 
 	private JPanel setupFindFrame() {
-		
-		ImageIcon findBtn = changeImgSize(new ImageIcon("imgsLogin/findBtn.png"), 90, 30);
-		ImageIcon findBtn2 = changeImgSize(new ImageIcon("imgsLogin/findBtn2.png"), 90, 30);
-		ImageIcon findBtn3 = changeImgSize(new ImageIcon("imgsLogin/findBtn3.png"), 90, 30);
-		ImageIcon cancelBtn = changeImgSize(new ImageIcon("imgsLogin/cancelBtn.png"), 70, 25);
-		ImageIcon cancelBtn2 = changeImgSize(new ImageIcon("imgsLogin/cancelBtn2.png"), 70, 25);
-		ImageIcon cancelBtn3 = changeImgSize(new ImageIcon("imgsLogin/cancelBtn3.png"), 70, 25);
-		
-		titleLabel = new JLabel("계정찾기", JLabel.CENTER);
-		idLabel = new JLabel("아이디", JLabel.CENTER);
+	    JPanel findPanel = new JPanel();
+	    findPanel.setLayout(new BoxLayout(findPanel, BoxLayout.Y_AXIS));
 
-		idTxt = new JTextField(10);
+	    titleLabel = new JLabel("계정 찾기", JLabel.CENTER);
+	    titleLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+	    findPanel.add(titleLabel);
 
-		findButton = new JButton(findBtn);
-		cancelButton = new JButton(cancelBtn);
+	    findPanel.add(Box.createVerticalStrut(100));
 
-		JPanel northPanel = new JPanel();
-		northPanel.add(titleLabel);
+	    JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
+	    idLabel = new JLabel("아이디");
+	    idTxt = new JTextField(10);
+	    centerPanel.add(idLabel);
+	    centerPanel.add(idTxt);
+	    findPanel.add(centerPanel);
 
-		centerPanel = new JPanel();
-		JPanel dataPanel = new JPanel(new GridLayout(1, 2, 10, 30));
-		dataPanel.add(idLabel);
-		dataPanel.add(idTxt);
+	    // 아이디 입력 필드와 버튼 사이의 간격 추가
+	    findPanel.add(Box.createVerticalStrut(10));
 
-		JPanel findPanel = new JPanel();
-		setButtonImg(findButton, findBtn2, findBtn3);
-		findPanel.add(findButton);
-		centerPanel.add(dataPanel);
-		centerPanel.add(findPanel);
+	    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
+	    findButton = new JButton(changeImgSize(new ImageIcon("imgsLogin/findBtn.png"), 90, 30));
+	    cancelButton = new JButton(changeImgSize(new ImageIcon("imgsLogin/cancelBtn.png"), 70, 25));
 
-		JPanel southPanel = new JPanel();
-		setButtonImg(cancelButton, cancelBtn2, cancelBtn3);
-		southPanel.add(cancelButton);
+	    setButtonImg(findButton, 
+	                 changeImgSize(new ImageIcon("imgsLogin/findBtn2.png"), 90, 30), 
+	                 changeImgSize(new ImageIcon("imgsLogin/findBtn3.png"), 90, 30));
+	    setButtonImg(cancelButton, 
+	                 changeImgSize(new ImageIcon("imgsLogin/cancelBtn2.png"), 70, 25), 
+	                 changeImgSize(new ImageIcon("imgsLogin/cancelBtn3.png"), 70, 25));
 
-		findForm.add(northPanel, BorderLayout.NORTH);
-		findForm.add(centerPanel, BorderLayout.CENTER);
-		findForm.add(southPanel, BorderLayout.SOUTH);
-		
-		return findForm;
+	    buttonPanel.add(findButton);
+	    buttonPanel.add(cancelButton);
 
+
+	    findPanel.add(buttonPanel);
+
+	    // 전체 패널 외부 여백 설정
+	    findPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+	    return findPanel;
 	}
 
 	public boolean isBlank() {

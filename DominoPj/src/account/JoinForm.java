@@ -90,15 +90,16 @@ public class JoinForm extends JDialog {
 		ImageIcon cancelBtn = changeImgSize(new ImageIcon("imgsLogin/cancelBtn.png"), 70, 25);
 		ImageIcon cancelBtn2 = changeImgSize(new ImageIcon("imgsLogin/cancelBtn2.png"), 70, 25);
 		ImageIcon cancelBtn3 = changeImgSize(new ImageIcon("imgsLogin/cancelBtn3.png"), 70, 25);
-		
+
 		titleLabel = new JLabel("회원가입", JLabel.CENTER);
+
 		idLabel = new JLabel("아이디", JLabel.CENTER);
 		pwLabel = new JLabel("비밀번호", JLabel.CENTER);
 		reLabel = new JLabel("비밀번호 확인", JLabel.CENTER);
 
-		idTxt = new JTextField(10);
-		pwTxt = new JPasswordField(10);
-		reTxt = new JPasswordField(10);
+		idTxt = new JTextField(20);
+		pwTxt = new JPasswordField(20);
+		reTxt = new JPasswordField(20);
 
 		joinButton = new JButton(joinBtn);
 		cancelButton = new JButton(cancelBtn);
@@ -106,29 +107,36 @@ public class JoinForm extends JDialog {
 		JPanel northPanel = new JPanel();
 		northPanel.add(titleLabel);
 
-		centerPanel = new JPanel();
-		JPanel dataPanel = new JPanel(new GridLayout(3, 2, 10, 30));
+		JPanel centerPanel = new JPanel(new BorderLayout());
+
+		JPanel dataPanel = new JPanel(new GridLayout(3, 2, 0, 75));
 		dataPanel.add(idLabel);
 		dataPanel.add(idTxt);
 		dataPanel.add(pwLabel);
 		dataPanel.add(pwTxt);
 		dataPanel.add(reLabel);
 		dataPanel.add(reTxt);
+
 		JPanel joinPanel = new JPanel();
 		setButtonImg(joinButton, joinBtn2, joinBtn3);
 		joinPanel.add(joinButton);
-		centerPanel.add(dataPanel);
-		centerPanel.add(joinPanel);
+
+		centerPanel.add(dataPanel, BorderLayout.CENTER);
+		centerPanel.add(joinPanel, BorderLayout.SOUTH);
 
 		JPanel southPanel = new JPanel();
 		setButtonImg(cancelButton, cancelBtn2, cancelBtn3);
 		southPanel.add(cancelButton);
 
+		JPanel joinForm = new JPanel(new BorderLayout());
 		joinForm.add(northPanel, BorderLayout.NORTH);
 		joinForm.add(centerPanel, BorderLayout.CENTER);
 		joinForm.add(southPanel, BorderLayout.SOUTH);
-		return joinForm;
 
+		// 외부 여백 설정
+		joinForm.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 170, 10, 170));
+
+		return joinForm;
 	}
 
 	public boolean isBlank() {
