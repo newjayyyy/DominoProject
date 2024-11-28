@@ -2,18 +2,25 @@ package mypage;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextPane;
 
 import account.LoginForm;
@@ -24,6 +31,7 @@ public class Page extends JPanel {
 	
 	private JPanel myPagePanel;
 	
+	ArrayList<Log> logData = new ArrayList<>();
 
 	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -56,24 +64,24 @@ public class Page extends JPanel {
 		//myData에서 이름 출력
 		JLabel userPane = new JLabel(LoginForm.myData.printName());
 		userPane.setFont(new Font("Arial",Font.PLAIN, 30));
-		userPane.setBounds(160, 380, 250, 50);
+		userPane.setBounds(160, 280, 250, 50);
 		myPagePanel.add(userPane);
 		// 파일 입출력으로 파일 불러오면 전적(OO승 OO패)이 업데이트 되는 걸로 바꿀예정
 		//myData에서 전적 출력
 		JLabel recordPane = new JLabel(LoginForm.myData.printWinLoss());
 		recordPane.setFont(new Font("Arial",Font.PLAIN, 30));
-		recordPane.setBounds(160, 430, 250, 50);
+		recordPane.setBounds(160, 310, 250, 50);
 		myPagePanel.add(recordPane);
 		
 		// 프로필 이미지 크기 조정
 		ImageIcon icon = new ImageIcon("imgs/profile.jpeg");
 		Image img = icon.getImage();
-		Image changeImg = img.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+		Image changeImg = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 		
 		//프로필 이미지 추가
 		ImageIcon profileImg = new ImageIcon(changeImg);
 		JLabel profile = new JLabel(profileImg);
-		profile.setBounds(100, 100, 300, 300); // 프로필 이미지 위치 조정
+		profile.setBounds(100, 80, 300, 300); // 프로필 이미지 위치 조정
 		myPagePanel.add(profile);
 		
 		//티어 이미지 크기 조정
@@ -86,12 +94,12 @@ public class Page extends JPanel {
 		else if(score>=2500) tier="imgs/grade_diamond.png";
 		ImageIcon gicon = new ImageIcon(tier);
 		Image gimg = gicon.getImage();
-		Image changegImg = gimg.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+		Image changegImg = gimg.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
 		
 		//티어 이미지 추가(지금은 gold만, 나중에 추가예정)
 		ImageIcon gradeImg = new ImageIcon(changegImg);
 		JLabel grade = new JLabel(gradeImg);
-		grade.setBounds(500, 150, 350, 350); // 프로필 이미지 위치 조정
+		grade.setBounds(80, 300, 350, 350); // 프로필 이미지 위치 조정
 		myPagePanel.add(grade);
 
 		ImageIcon backImg = new ImageIcon("imgs/Back.png");
@@ -110,9 +118,46 @@ public class Page extends JPanel {
 		});
 		myPagePanel.add(btnBack);
 
-		btnBack.setBounds(440, 570, 130, 60);
+		btnBack.setBounds(440, 600, 130, 60);
+		
+		//유저의 게임로그 읽기
+		readAll("gamelog/"+LoginForm.myData.id+".txt");
+		//전적테이블
+		String[] columnNames = {"일반/랭크", "게임모드", "승패", "진행라운드", "플레이타임", "점수변동"};
+		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+		for (Log log : logData) {
+            model.addRow(new Object[]{log.getType(), log.getMod(), log.getWinLoss(), log.getRound(),
+            		log.getTime(), log.getScoreChange()});   
+        }
+		JTable table = new JTable(model);
+		JScrollPane tableScrollPane = new JScrollPane(table);
+		myPagePanel.add(tableScrollPane);
+        table.setFillsViewportHeight(true);
+        tableScrollPane.setBounds(450, 150, 500, 400);
+		
 
 		return myPagePanel;
 
+	}
+	public void readAll(String filename) {
+		Scanner filein = openFile(filename);
+		Log l = null;
+		while (filein.hasNext()) {
+			l = new Log();
+			l.read(filein);
+			logData.add(l);
+		}
+		filein.close();
+	}
+	
+	public Scanner openFile(String filename) {
+		Scanner filein = null;
+		try {
+			filein = new Scanner(new File(filename));
+		} catch (Exception e) {
+			System.out.println(filename + ": 파일 없음");
+			System.exit(0);
+		}
+		return filein;
 	}
 }
