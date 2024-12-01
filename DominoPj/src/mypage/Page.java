@@ -20,8 +20,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 
 import account.LoginForm;
 
@@ -123,19 +126,30 @@ public class Page extends JPanel {
 		//유저의 게임로그 읽기
 		readAll("gamelog/"+LoginForm.myData.id+".txt");
 		//전적테이블
-		String[] columnNames = {"일반/랭크", "게임모드", "승패", "진행라운드", "플레이타임", "점수변동"};
+		String[] columnNames = {"게임모드", "승패", "진행라운드", "플레이타임", "점수변동"};
 		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 		for (Log log : logData) {
-            model.addRow(new Object[]{log.getType(), log.getMod(), log.getWinLoss(), log.getRound(),
-            		log.getTime(), log.getScoreChange()});   
+            model.addRow(new Object[]{log.getMod(), log.getWinLoss(), log.getRound(), log.getTime(), log.getScoreChange()});   
         }
 		JTable table = new JTable(model);
 		JScrollPane tableScrollPane = new JScrollPane(table);
 		myPagePanel.add(tableScrollPane);
         table.setFillsViewportHeight(true);
         tableScrollPane.setBounds(450, 150, 500, 400);
-		
+        
+        TableColumnModel columnModel = table.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(100); // "게임모드" 열
+        columnModel.getColumn(1).setPreferredWidth(50);  // "승패" 열
+        columnModel.getColumn(2).setPreferredWidth(100); // "진행라운드" 열
+        columnModel.getColumn(3).setPreferredWidth(150); // "플레이타임" 열
+        columnModel.getColumn(4).setPreferredWidth(100); // "점수변동" 열
 
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER); // 가운데 정렬
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            columnModel.getColumn(i).setCellRenderer(centerRenderer);
+        }
+        
 		return myPagePanel;
 
 	}
