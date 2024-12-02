@@ -20,6 +20,16 @@ public class Tile {
 		}
 		return false;
 	}
+	boolean tilematches(int n) {
+		if(leftnum==n||rightnum==n) return true;
+		return false;
+	}
+	
+	boolean isdouble() {
+		if(leftnum==rightnum) return true;
+		return false;
+	}
+	
 	int tilesum() {
 		return leftnum+rightnum;
 	}

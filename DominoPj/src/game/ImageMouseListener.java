@@ -37,18 +37,24 @@ public class ImageMouseListener extends MouseAdapter {
     @Override
     public void mouseEntered(MouseEvent e) {
         // 마우스가 레이블 위에 올라갔을 때 크기를 증가
-        imageLabel.setSize(HOVER_WIDTH, HOVER_HEIGHT);
-        imageLabel.setIcon(new ImageIcon(((ImageIcon) imageLabel.getIcon()).getImage().getScaledInstance(HOVER_WIDTH, HOVER_HEIGHT, Image.SCALE_SMOOTH)));
+		/*
+		 * imageLabel.setSize(HOVER_WIDTH, HOVER_HEIGHT); imageLabel.setIcon(new
+		 * ImageIcon(((ImageIcon)
+		 * imageLabel.getIcon()).getImage().getScaledInstance(HOVER_WIDTH, HOVER_HEIGHT,
+		 * Image.SCALE_SMOOTH)));
+		 */
         imageLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         // 마우스를 떼었을 때 원래 크기로 돌아가는데, 클릭된 이미지만 크기를 유지
-        if (imageLabel != selectedImage[0]) {
-            imageLabel.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-            imageLabel.setIcon(new ImageIcon(((ImageIcon) imageLabel.getIcon()).getImage().getScaledInstance(DEFAULT_WIDTH, DEFAULT_HEIGHT, Image.SCALE_SMOOTH)));
-        }
+		/*
+		 * if (imageLabel != selectedImage[0]) { imageLabel.setSize(DEFAULT_WIDTH,
+		 * DEFAULT_HEIGHT); imageLabel.setIcon(new ImageIcon(((ImageIcon)
+		 * imageLabel.getIcon()).getImage().getScaledInstance(DEFAULT_WIDTH,
+		 * DEFAULT_HEIGHT, Image.SCALE_SMOOTH))); }
+		 */
         imageLabel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 

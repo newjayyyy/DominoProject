@@ -115,7 +115,12 @@ public class Imgmgr {
 
 		return resizedImage;
 	}
-	
+	public static BufferedImage resizeImage(String imgname, int width, int height) {
+		// 새로운 크기의 BufferedImage를 생성합니다.
+		BufferedImage newimg=loadImage(imgname);
+		BufferedImage resizedImage = resizeImage(newimg, width, height);
+		return resizedImage;
+	}
 	
 	
 	public static BufferedImage rotateImage(BufferedImage image, int angle) {
