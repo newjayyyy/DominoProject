@@ -110,7 +110,7 @@ public class GameRule extends JPanel {
 		
 		//back 버튼
 		Image bImg=backImg.getImage();
-		Image changeBImg=bImg.getScaledInstance(130,60,Image.SCALE_SMOOTH);
+		Image changeBImg=bImg.getScaledInstance(180,60,Image.SCALE_SMOOTH);
 		ImageIcon changeBackImg=new ImageIcon(changeBImg);
 		JButton btnBack = new JButton(changeBackImg);
 		btnBack.setContentAreaFilled(false);
@@ -121,7 +121,7 @@ public class GameRule extends JPanel {
                 cardLayout.show(mainPanel, "MainPage"); // 메인 페이지로 돌아가기
             }
         });
-		btnBack.setBounds(440, 600, 130, 60);
+		btnBack.setBounds(415, 600, 180, 60);
 		gameRulePanel.add(btnBack);
 		
 		

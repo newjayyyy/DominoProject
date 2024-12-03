@@ -96,15 +96,15 @@ public class FindForm extends JDialog {
 	    findPanel.add(Box.createVerticalStrut(10));
 
 	    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
-	    findButton = new JButton(changeImgSize(new ImageIcon("imgsLogin/findBtn.png"), 90, 30));
-	    cancelButton = new JButton(changeImgSize(new ImageIcon("imgsLogin/cancelBtn.png"), 70, 25));
+	    findButton = new JButton(changeImgSize(new ImageIcon("imgsLogin/findButton.png"), 90, 30));
+	    cancelButton = new JButton(changeImgSize(new ImageIcon("imgsLogin/cancelBtn.png"), 90, 25));
 
 	    setButtonImg(findButton, 
-	                 changeImgSize(new ImageIcon("imgsLogin/findBtn2.png"), 90, 30), 
-	                 changeImgSize(new ImageIcon("imgsLogin/findBtn3.png"), 90, 30));
+	                 changeImgSize(new ImageIcon("imgsLogin/findButton.png"), 90, 30), 
+	                 changeImgSize(new ImageIcon("imgsLogin/findButton.png"), 90, 30));
 	    setButtonImg(cancelButton, 
-	                 changeImgSize(new ImageIcon("imgsLogin/cancelBtn2.png"), 70, 25), 
-	                 changeImgSize(new ImageIcon("imgsLogin/cancelBtn3.png"), 70, 25));
+	                 changeImgSize(new ImageIcon("imgsLogin/cancelBtn.png"), 90, 25), 
+	                 changeImgSize(new ImageIcon("imgsLogin/cancelBtn.png"), 90, 25));
 
 	    buttonPanel.add(findButton);
 	    buttonPanel.add(cancelButton);

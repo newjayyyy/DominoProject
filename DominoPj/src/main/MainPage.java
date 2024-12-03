@@ -193,16 +193,25 @@ public class MainPage extends JFrame {
 	    btnDraw.setIcon(DrawIcon);
 	    btnDraw.setBounds(700, 280, 220, 70);
 	    panel.add(btnDraw);
+	    btnDraw.setBorderPainted(false);
+	    btnDraw.setContentAreaFilled(false);
+	    btnDraw.setFocusPainted(false);
 
 	    JButton btnAll3 = new JButton();
 	    btnAll3.setIcon(All3Icon);
 	    btnAll3.setBounds(700, 360, 220, 70);
 	    panel.add(btnAll3);
+	    btnAll3.setBorderPainted(false);
+	    btnAll3.setContentAreaFilled(false);
+	    btnAll3.setFocusPainted(false);
 
 	    JButton btnAll5 = new JButton();
 	    btnAll5.setIcon(All5Icon);
 	    btnAll5.setBounds(700, 440, 220, 70);
 	    panel.add(btnAll5);
+	    btnAll5.setBorderPainted(false);
+	    btnAll5.setContentAreaFilled(false);
+	    btnAll5.setFocusPainted(false);
 	    
 	    JButton btnBlock = new JButton();
 	    //btnBlock.setIcon(BlockIcon);	//이미지 받으면
@@ -447,8 +456,11 @@ public class MainPage extends JFrame {
 		// 게임 종료 버튼
 		JButton btnExit = new JButton();
 		btnExit.setIcon(gameOverIcon);
-		btnExit.setBounds(750, 600, 125, 45);
+		btnExit.setBounds(750, 600, 125, 50);
 		panel.add(btnExit);
+		btnExit.setBorderPainted(false);
+	    btnExit.setContentAreaFilled(false);
+	    btnExit.setFocusPainted(false);
 		btnExit.addActionListener(e -> showExitConfirmation());
 		
 		return panel;
@@ -568,14 +580,14 @@ public class MainPage extends JFrame {
 			mainPage.setVisible(true);
 			
 			//login 패널 먼저 나옴
-			/*LoginForm loginForm = new LoginForm();
+			LoginForm loginForm = new LoginForm();
 	        JPanel loginFormPanel=loginForm.showLoginForm(mainPage,mainPanel, cardLayout);
 	        
 	        mainPage.setSize(600, 400);
 	        mainPage.setLocationRelativeTo(null);  
 	        mainPanel.add(loginFormPanel,"로그인페이지");
 	        cardLayout.show(mainPanel, "로그인페이지");
-	        */
+	        
 	        
 		});
 	}

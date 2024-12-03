@@ -84,12 +84,12 @@ public class JoinForm extends JDialog {
 	}
 
 	private JPanel setupJoinFrame() {
-		ImageIcon joinBtn = changeImgSize(new ImageIcon("imgsLogin/joinBtn.png"), 90, 30);
-		ImageIcon joinBtn2 = changeImgSize(new ImageIcon("imgsLogin/joinBtn2.png"), 90, 30);
-		ImageIcon joinBtn3 = changeImgSize(new ImageIcon("imgsLogin/joinBtn3.png"), 90, 30);
-		ImageIcon cancelBtn = changeImgSize(new ImageIcon("imgsLogin/cancelBtn.png"), 70, 25);
-		ImageIcon cancelBtn2 = changeImgSize(new ImageIcon("imgsLogin/cancelBtn2.png"), 70, 25);
-		ImageIcon cancelBtn3 = changeImgSize(new ImageIcon("imgsLogin/cancelBtn3.png"), 70, 25);
+		ImageIcon joinBtn = changeImgSize(new ImageIcon("imgsLogin/joinButton.png"), 90, 30);
+		ImageIcon joinBtn2 = changeImgSize(new ImageIcon("imgsLogin/joinButton.png"), 90, 30);
+		ImageIcon joinBtn3 = changeImgSize(new ImageIcon("imgsLogin/joinButton.png"), 90, 30);
+		ImageIcon cancelBtn = changeImgSize(new ImageIcon("imgsLogin/cancelBtn.png"), 100, 25);
+		ImageIcon cancelBtn2 = changeImgSize(new ImageIcon("imgsLogin/cancelBtn.png"), 100, 25);
+		ImageIcon cancelBtn3 = changeImgSize(new ImageIcon("imgsLogin/cancelBtn.png"), 100, 25);
 
 		titleLabel = new JLabel("회원가입", JLabel.CENTER);
 

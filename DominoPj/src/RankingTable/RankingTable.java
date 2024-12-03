@@ -35,6 +35,8 @@ public class RankingTable extends JFrame{
         /*setTitle("Ranking Table");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         */
+        ImageIcon helpImg=new ImageIcon("imgs/help.png");
+		ImageIcon backImg=new ImageIcon("imgs/Back.png");
 
         // 테이블 모델 정의
         String[] columnNames = {"Ranking", "ID", "Tier", "Score", "Attempts", "Successes"};
@@ -102,7 +104,13 @@ public class RankingTable extends JFrame{
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
         // 닫기 버튼
-        JButton closeButton = new JButton("랭킹 화면 닫기");
+        Image bImg=backImg.getImage();
+		Image changeBImg=bImg.getScaledInstance(150,40,Image.SCALE_SMOOTH);
+		ImageIcon changeBackImg=new ImageIcon(changeBImg);
+        JButton closeButton = new JButton(changeBackImg);
+        closeButton.setVisible(true);
+        closeButton.setBorderPainted(false);
+        closeButton.setContentAreaFilled(false);
         closeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -111,7 +119,13 @@ public class RankingTable extends JFrame{
         });
 
         // 점수 설명 이미지 버튼
-        JButton showImageButton = new JButton("점수 설명 보기");
+        Image hImg=helpImg.getImage();
+		Image changeNImg=hImg.getScaledInstance(150,40,Image.SCALE_SMOOTH);
+		ImageIcon changeNextImg=new ImageIcon(changeNImg);
+        JButton showImageButton = new JButton(changeNextImg);
+        showImageButton.setVisible(true);
+        showImageButton.setBorderPainted(false);
+        showImageButton.setContentAreaFilled(false);
         showImageButton.addActionListener(e -> showScoreExplanation());
 
         bottomPanel.add(showImageButton);

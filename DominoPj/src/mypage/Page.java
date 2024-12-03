@@ -77,7 +77,7 @@ public class Page extends JPanel {
 		myPagePanel.add(recordPane);
 		
 		// 프로필 이미지 크기 조정
-		ImageIcon icon = new ImageIcon("imgs/profile.jpeg");
+		ImageIcon icon = new ImageIcon("imgs/profile.png");
 		Image img = icon.getImage();
 		Image changeImg = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 		
@@ -109,7 +109,7 @@ public class Page extends JPanel {
 
 		// back 버튼
 		Image bImg = backImg.getImage();
-		Image changeBImg = bImg.getScaledInstance(130, 60, Image.SCALE_SMOOTH);
+		Image changeBImg = bImg.getScaledInstance(190, 60, Image.SCALE_SMOOTH);
 		ImageIcon changeBackImg = new ImageIcon(changeBImg);
 		JButton btnBack = new JButton(changeBackImg);
 		btnBack.setContentAreaFilled(false);
@@ -121,7 +121,7 @@ public class Page extends JPanel {
 		});
 		myPagePanel.add(btnBack);
 
-		btnBack.setBounds(440, 600, 130, 60);
+		btnBack.setBounds(410, 600, 190, 60);
 		
 		//유저의 게임로그 읽기
 		readAll("gamelog/"+LoginForm.myData.id+".txt");

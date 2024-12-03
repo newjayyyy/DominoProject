@@ -105,15 +105,15 @@ public class LoginForm extends JFrame {
 		idField = new JTextField(10);
 		pwField = new JPasswordField(10);
 
-		ImageIcon loginImg = changeImgSize(new ImageIcon("imgsLogin/loginButton.png"), 100, 25);
-		ImageIcon loginImg2 = changeImgSize(new ImageIcon("imgsLogin/loginButton2.png"), 100, 25);
-		ImageIcon loginImg3 = changeImgSize(new ImageIcon("imgsLogin/loginButton3.png"), 100, 25);
-		ImageIcon joinImg = changeImgSize(new ImageIcon("imgsLogin/joinButton.png"), 80, 25);
-		ImageIcon joinImg2 = changeImgSize(new ImageIcon("imgsLogin/joinButton2.png"), 80, 25);
-		ImageIcon joinImg3 = changeImgSize(new ImageIcon("imgsLogin/joinButton3.png"), 80, 25);
-		ImageIcon findImg = changeImgSize(new ImageIcon("imgsLogin/findButton.png"), 80, 25);
-		ImageIcon findImg2 = changeImgSize(new ImageIcon("imgsLogin/findButton2.png"), 80, 25);
-		ImageIcon findImg3 = changeImgSize(new ImageIcon("imgsLogin/findButton3.png"), 80, 25);
+		ImageIcon loginImg = changeImgSize(new ImageIcon("imgsLogin/loginButton.png"), 100, 30);
+		ImageIcon loginImg2 = changeImgSize(new ImageIcon("imgsLogin/loginButton.png"), 100, 30);
+		ImageIcon loginImg3 = changeImgSize(new ImageIcon("imgsLogin/loginButton.png"), 100, 30);
+		ImageIcon joinImg = changeImgSize(new ImageIcon("imgsLogin/joinButton.png"), 80, 30);
+		ImageIcon joinImg2 = changeImgSize(new ImageIcon("imgsLogin/joinButton.png"), 80, 30);
+		ImageIcon joinImg3 = changeImgSize(new ImageIcon("imgsLogin/joinButton.png"), 80, 30);
+		ImageIcon findImg = changeImgSize(new ImageIcon("imgsLogin/findButton.png"), 80, 30);
+		ImageIcon findImg2 = changeImgSize(new ImageIcon("imgsLogin/findButton.png"), 80, 30);
+		ImageIcon findImg3 = changeImgSize(new ImageIcon("imgsLogin/findButton.png"), 80, 30);
 
 		loginbutton = new JButton(loginImg);
 		joinButton = new JButton(joinImg);
@@ -172,7 +172,7 @@ public class LoginForm extends JFrame {
 				boolean loggedIn = false;
 				for (User list : userData) {
 					if (list.id.equals(idField.getText()) && list.pw.equals(pwField.getText())) {
-						JOptionPane.showMessageDialog(null, "로그인 성공");
+						JOptionPane.showMessageDialog(null, list.id+"님 환영합니다!");
 						loggedIn = true;
 						// id와 pw가 일치하면 현재 객체를 myData에 저장
 						myData = list;
